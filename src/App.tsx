@@ -5,7 +5,7 @@ import { PlayersRoster } from "./PlayersRoster";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import SimpleBottomNavigation from "./UI/Modal/Navigation";
 
-function App() {
+export const App = () => {
   return (
     <div className="App">
       <div>
@@ -22,5 +22,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
