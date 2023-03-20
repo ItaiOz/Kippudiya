@@ -1,0 +1,32 @@
+.modal-body {
+  font-weight: bold;
+}
+
+.input-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+
+  input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease-in-out;
+
+    &.error {
+      border-color: rgb(255, 27, 27);
+      box-shadow: 0 0 5px rgba(255, 54, 54, 0.5);
+    }
+  }
+  input:focus {
+    border-color: #0e8034;
+    box-shadow: 0 0 5px rgba(20, 151, 57, 0.5);
+    outline: none;
+  }
+  button {
+    width: 50%;
+  }
+}
