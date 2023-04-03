@@ -10,30 +10,30 @@ export const MainMenu = () => {
     <>
       <div className="main-menu-container">
         <Button
-          color={"success"}
+          className="btn"
           variant="contained"
           onClick={() => navigate("/game-zone")}
         >
           Start Game
         </Button>
         <Button
-          color={"success"}
+          className="btn"
           variant="contained"
           onClick={() => navigate("players-roster")}
         >
-          Poker Calculator
+          PLayers Roster
         </Button>
 
-        <Button color={"success"} variant="contained">
+        <Button className="btn" variant="contained">
           Poker Calculator
         </Button>
-        <Button color={"success"} variant="contained">
+        <Button className="btn" variant="contained">
           LeaderBoard
         </Button>
-        <Button color={"success"} variant="contained">
+        <Button className="btn" variant="contained">
           House Rules
         </Button>
-        <Button color={"success"} variant="contained">
+        <Button className="btn" variant="contained">
           What To Order?
         </Button>
       </div>

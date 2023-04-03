@@ -1,0 +1,156 @@
+.actions-buttons-block {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+
+  .button {
+    width: 138px;
+    font-weight: bold;
+    border-radius: 8px;
+  }
+
+  .refresh-button {
+    background-color: #363b99;
+    border: 1px #363b99 solid;
+    border-radius: 8px;
+    padding: 5px 15px;
+    font-size: 25px;
+  }
+
+  .add-player-btn {
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: #088813;
+  }
+}
+
+.game-zone-container {
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  font-size: 25px;
+  font-weight: bold;
+
+  .players-balance {
+    width: 100%;
+    display: block;
+  }
+
+  .choose-player-block {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
+
+  .bin-button {
+    border: 2px #930a0c solid;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding-top: 2px;
+    color: #930a0c;
+  }
+
+  .players-options {
+    font-family: "alfa slab";
+    border-radius: 5px;
+    width: 150px;
+    padding: 5px 10px;
+    font-size: 25px;
+  }
+
+  .add-button {
+    font-size: 25px;
+    font-weight: bold;
+  }
+  .player-stats {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    font-size: 25px;
+    font-weight: bold;
+
+    .kipud-controls {
+      display: flex;
+      gap: 10px;
+
+      .balance-button {
+        background-color: #930a0c !important;
+        font-weight: bold !important;
+        min-width: 30px;
+        width: 40px;
+        height: 35px;
+        border-radius: 8px;
+        padding-top: 5px;
+        font-size: 25px;
+        transition: transform 0.1s ease;
+      }
+
+      .balance-button:active {
+        transform: scale(1.1);
+        transition: transform 0.05s ease;
+      }
+
+      .number-container {
+        position: relative;
+
+        .animation {
+          position: absolute;
+          top: -20px;
+          left: 50%;
+          transform: translateX(-50%);
+          font-size: 26px;
+          font-weight: bold;
+          color: rgb(255, 255, 255);
+          animation: pop-up 0.5s ease forwards;
+        }
+
+        @keyframes pop-up {
+          0% {
+            transform: translate(-50%, 0) scale(0.5);
+          }
+          50% {
+            transform: translate(-50%, -10px) scale(1.2);
+            opacity: 0.5;
+          }
+          75% {
+            transform: translate(-50%, -15px) scale(1);
+            opacity: 0.25;
+          }
+          100% {
+            transform: translate(-50%, -20px) scale(1);
+            opacity: 0;
+          }
+        }
+      }
+
+      .buy-in-count {
+        display: flex;
+        justify-content: center;
+        width: 20px;
+        padding: 0 5px;
+        color: white;
+      }
+    }
+  }
+
+  .game-preperation-container {
+    width: 80%;
+    .start-game-btn {
+      font-family: "alfa slab";
+      font-weight: bold;
+      width: 100%;
+    }
+
+    .tonights-players {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      list-style: none;
+      padding-bottom: 10px;
+      padding-right: 10px;
+    }
+  }
+}

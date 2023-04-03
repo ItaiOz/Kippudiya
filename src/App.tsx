@@ -1,23 +1,25 @@
 import React from "react";
 import { MainMenu } from "./MainMenu";
-import { GameZone } from "./GameZone";
+import { GameZone } from "./GameZone/GameZone";
 import { PlayersRoster } from "./PlayersRoster";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import SimpleBottomNavigation from "./UI/Modal/Navigation";
+import { Leaderboard } from "./Leaderboard";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { FooterNavigation } from "./UI/Footer";
 
 function App() {
   return (
     <div className="App">
       <div>
-        <h1>Hakippudiya</h1>
+        <h1 className="game-header">Hakippudiya</h1>
       </div>
       <BrowserRouter>
-        <SimpleBottomNavigation />
         <Routes>
           <Route path="/" element={<MainMenu />} />
           <Route path="/game-zone" element={<GameZone />} />
           <Route path="/players-roster" element={<PlayersRoster />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Routes>
+        <FooterNavigation />
       </BrowserRouter>
     </div>
   );

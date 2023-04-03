@@ -48,8 +48,7 @@ export const PlayersRoster = () => {
           placeholder="Add new Player"
         ></input>
         <Button
-          className="add-players-button"
-          color={"success"}
+          className="add-players-button btn"
           size={"small"}
           variant="contained"
           onClick={onAddPlayer}

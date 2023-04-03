@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -51,7 +51,7 @@ export const InputModal: React.FC<Props> = ({
             />
             <Button
               variant="contained"
-              color="success"
+              className="btn"
               onClick={onBtnClicked}
               autoFocus
             >

@@ -9,9 +9,11 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 interface IGame {
   isGameOn: boolean;
   players: string[];
+  gameId: number;
   setIsGameOn: (value: boolean) => void;
   setPlayers: (retrievedPlayers: string[]) => void;
   retrievePlayers: () => void;
+  setGameId: (num: number) => void;
 }
 
 export const useGameStore = create<IGame>((set) => ({
@@ -32,4 +34,6 @@ export const useGameStore = create<IGame>((set) => ({
     });
     useGameStore.getState().setPlayers(playersResponse);
   },
+  gameId: 0,
+  setGameId: (num: number) => set({ gameId: num }),
 }));

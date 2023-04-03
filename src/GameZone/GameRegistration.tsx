@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import { createClient } from "@supabase/supabase-js";
-import { useGameStore } from "../../store/gameStore";
-import { InputModal } from "../../UI/Modal/InputModal";
+import { useGameStore } from "../store/gameStore";
+import { InputModal } from "../UI/Modal/InputModal";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -12,6 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const GameRegistration: React.FC<any> = () => {
   const setIsGameOn = useGameStore((state) => state.setIsGameOn);
+  const setGameId = useGameStore((state) => state.setGameId);
 
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState("");
@@ -30,7 +31,7 @@ export const GameRegistration: React.FC<any> = () => {
       <InputModal
         isOpen={isModalOpen}
         onCloseModal={() => setIsModalOpen(false)}
-        onInputInserted={() => startGame()}
+        onInputInserted={(name: string) => startGame(name)}
       />
     );
   };
@@ -56,16 +57,15 @@ export const GameRegistration: React.FC<any> = () => {
     });
   };
 
-  const startGame = async () => {
-    setIsGameOn(true);
+  const startGame = async (name: string) => {
     let gameId;
     const { data } = await supabase
       .from("games")
       .insert([{ players: selectedPlayers }])
       .select();
     if (data) {
-      console.log(data);
       gameId = data[0].id;
+      setGameId(gameId);
     } else console.log("fix it");
 
     const players = selectedPlayers.reduce((acc: any, currVal: string) => {
@@ -73,9 +73,13 @@ export const GameRegistration: React.FC<any> = () => {
       return acc;
     }, {});
 
-    const {} = await supabase
+    const { data: sessionData, error } = await supabase
       .from("poker-sessions")
-      .insert([{ game_id: gameId, mekaped: "someone", players }]);
+      .insert([{ game_id: gameId, mekaped: name, players: players }])
+      .select();
+
+    if (error) console.log(error);
+    if (sessionData) setIsGameOn(true);
   };
 
   useEffect(() => {
@@ -91,7 +95,7 @@ export const GameRegistration: React.FC<any> = () => {
             {player}
           </span>
           <button className="bin-button" onClick={() => deletePlayer(player)}>
-            <FaRegTrashAlt size={25} className="bin-icon" color={"green"} />
+            <FaRegTrashAlt size={25} className="bin-icon" />
           </button>
         </div>
       ))}
@@ -107,8 +111,7 @@ export const GameRegistration: React.FC<any> = () => {
           ))}
         </select>
         <Button
-          className="add-button"
-          color={"success"}
+          className="add-button btn"
           size={"small"}
           variant="contained"
           onClick={addPlayer}
@@ -119,8 +122,7 @@ export const GameRegistration: React.FC<any> = () => {
       <Button
         disabled={!isGameAvialable}
         variant="contained"
-        color="success"
-        className="start-game-btn"
+        className="start-game-btn btn"
         onClick={() => setIsModalOpen(true)}
       >
         Start Game!
