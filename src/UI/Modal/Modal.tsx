@@ -8,51 +8,51 @@ import DialogTitle from "@mui/material/DialogTitle";
 import "./style.scss";
 
 interface Props {
-  buttonTitle: string;
   modalTitle?: string;
-  modalContent: string;
-  onConfirm: any;
   isOpen: boolean;
-  onCloseModal: any;
+  isDisabled?: boolean;
+  children: any;
+  onApprove?: Function;
+  onClose?: Function;
 }
 
 export const AlertDialog: React.FC<Props> = ({
-  buttonTitle,
+  children,
   modalTitle,
-  modalContent,
-  onConfirm,
   isOpen,
-  onCloseModal,
+  onClose,
+  onApprove,
+  isDisabled,
 }: Props) => {
   return (
-    <div>
-      <Dialog
-        open={isOpen}
-        onClose={() => onCloseModal()}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            className="modal-body"
-            id="alert-dialog-description"
-          >
-            {modalContent}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => onCloseModal()}>Cancel</Button>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => onConfirm()}
-            autoFocus
-          >
-            Confirm
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    <Dialog
+      open={isOpen}
+      onClose={() => onClose?.()}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+      className="alert-dialog-modal"
+    >
+      <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText
+          className="modal-confirm-body"
+          id="alert-dialog-description"
+        >
+          {children}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => onClose?.()}>Cancel</Button>
+        <Button
+          variant="contained"
+          className="btn"
+          onClick={() => onApprove?.()}
+          autoFocus
+          disabled={isDisabled}
+        >
+          Confirm
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
