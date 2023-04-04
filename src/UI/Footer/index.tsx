@@ -49,6 +49,9 @@ export const FooterNavigation: React.FC<any> = () => {
       case 4:
         navigate("/players-roster");
         break;
+      case 5:
+        navigate("/game-zone");
+        break;
     }
   };
 

@@ -32,7 +32,6 @@ export const AlertDialog: React.FC<Props> = ({
       aria-describedby="alert-dialog-description"
       className="alert-dialog-modal"
     >
-      <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>
       <DialogContent>
         <DialogContentText
           className="modal-confirm-body"

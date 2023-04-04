@@ -5,46 +5,44 @@ import { AlertDialog } from "../UI/Modal/Modal";
 import Button from "@mui/material/Button";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../store/gameStore";
-import { getKipudModalBody } from "../utils";
+import { ApiLoader } from "../UI/ApiLoader";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 export const GamePlay: React.FC<any> = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [players, setPlayers] = useState({});
+  const [isKipudModalOpen, setIsKipudModalOpen] = useState(false);
+  const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
   const [playersBalance, setPlayersBalance]: any = useState({});
   const [balanceChanges, setBalanceChanges] = useState({});
   const [toggleRefresh, setToggleRefresh] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
 
   const gameId = useGameStore((state) => state.gameId);
+  const players = useGameStore((state) => state.players);
 
-  const onModalConfirm = async () => {
-    setIsModalOpen(false);
+  const onKipudConfirm = async () => {
+    setIsLoading(true);
 
     const { data, error } = await supabase
       .from("poker-sessions")
       .insert({ game_id: gameId, mekaped: "someone", players: playersBalance })
       .select();
 
+    if (data) {
+      retrieveGameData();
+    }
     if (error) console.log(error);
+    setIsKipudModalOpen(false);
+
+    setIsLoading(false);
   };
 
-  // const renderModal = () => {
-  //   return (
-  //     <AlertDialog
-  //       playersChanges={balanceChanges}
-  //       modalBody={getKipudModalBody(balanceChanges)}
-  //       isDisabled={Object.keys(balanceChanges).length === 0}
-  //       onConfirm={() => onModalConfirm()}
-  //       isOpen={isModalOpen}
-  //       onCloseModal={() => setIsModalOpen(false)}
-  //     />
-  //   );
-  // };
-
   const retrieveGameData = async () => {
+    setIsLoading(true);
+
     const { data, error } = await supabase
       .from("poker-sessions")
       .select("*")
@@ -52,10 +50,11 @@ export const GamePlay: React.FC<any> = () => {
       .limit(1);
 
     if (data) {
-      setPlayers(data[0].players);
       setPlayersBalance(data[0].players);
     }
     if (error) console.log(error);
+
+    setIsLoading(false);
   };
 
   const getLatestPlayersBalance = async () => {
@@ -79,7 +78,7 @@ export const GamePlay: React.FC<any> = () => {
   };
 
   const handleKipud = () => {
-    setIsModalOpen(true);
+    setIsKipudModalOpen(true);
     const balance = getLatestPlayersBalance();
     balance.then((previousBalance) => {
       const balanceDiff = Object.entries(previousBalance).reduce(
@@ -99,10 +98,91 @@ export const GamePlay: React.FC<any> = () => {
     retrieveGameData();
   }, [toggleRefresh]);
 
+  if (isLoading) {
+    return <ApiLoader />;
+  }
+
+  const renderKipudModal = () => {
+    return (
+      <AlertDialog
+        isOpen={isKipudModalOpen}
+        onApprove={onKipudConfirm}
+        onClose={() => setIsKipudModalOpen(false)}
+        isDisabled={Object.keys(balanceChanges).length === 0}
+      >
+        {balanceChanges && (
+          <>
+            {Object.keys(balanceChanges).length > 0 ? (
+              <p>These Following changes will be made</p>
+            ) : (
+              <p>No changes have been made so far</p>
+            )}
+            {Object.entries(balanceChanges).map(
+              ([key, value]: any, index: number) => (
+                <div className="players-changes" key={index}>
+                  <span>{key}</span>
+                  <span>{value > 0 ? `+${value}` : value}</span>
+                </div>
+              )
+            )}
+          </>
+        )}
+      </AlertDialog>
+    );
+  };
+
+  const onAddPlayer = async () => {
+    const found = Object.keys(playersBalance).find(
+      (player) => player === selectedNewPlayer
+    );
+    if (found) return;
+
+    const tempNewBalance = { ...playersBalance };
+    tempNewBalance[selectedNewPlayer] = 1;
+    setPlayersBalance(tempNewBalance);
+
+    setIsLoading(true);
+
+    const { data, error } = await supabase
+      .from("poker-sessions")
+      .insert({ game_id: gameId, mekaped: "someone", players: tempNewBalance })
+      .select();
+
+    if (data) {
+      retrieveGameData();
+    }
+    if (error) console.log(error);
+    setIsAddPlayerModalOpen(false);
+
+    setIsLoading(false);
+  };
+
+  const renderAddPlayerModal = () => {
+    return (
+      <AlertDialog
+        isOpen={isAddPlayerModalOpen}
+        onApprove={() => onAddPlayer()}
+        onClose={() => setIsAddPlayerModalOpen(false)}
+      >
+        <p>Select a new player to join the game</p>
+        <select
+          className="add-new-player"
+          onChange={(e) => setSelectedNewPlayer(e.target.value)}
+          value={selectedNewPlayer}
+        >
+          <option>Select...</option>
+          {players.map((player, index) => (
+            <option key={index}>{player}</option>
+          ))}
+        </select>
+      </AlertDialog>
+    );
+  };
+
   return (
     <>
       <div className="players-balance">
-        {Object.entries(players).map(([player, balance]: any, index) => (
+        {Object.entries(playersBalance).map(([player, balance]: any, index) => (
           <Player
             toggle={toggleRefresh}
             player={player}
@@ -133,14 +213,13 @@ export const GamePlay: React.FC<any> = () => {
           size={"small"}
           className="add-player-btn"
           variant="contained"
-          onClick={handleKipud}
+          onClick={() => setIsAddPlayerModalOpen(true)}
         >
-          `` Add New Player
+          Add New Player
         </Button>
+        {renderKipudModal()}
+        {renderAddPlayerModal()}
       </div>
-      <AlertDialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        Content
-      </AlertDialog>
     </>
   );
 };
