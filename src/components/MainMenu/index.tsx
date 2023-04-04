@@ -1,7 +1,7 @@
 import React from "react";
+import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import "./style.scss";
 
 export const MainMenu = () => {
   const navigate = useNavigate();

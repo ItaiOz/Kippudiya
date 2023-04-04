@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import { createClient } from "@supabase/supabase-js";
-import { useGameStore } from "../store/gameStore";
-import { InputModal } from "../UI/Modal/InputModal";
+import { useGameStore } from "../../store/gameStore";
+import { InputModal } from "../../common/Modal/InputModal";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;

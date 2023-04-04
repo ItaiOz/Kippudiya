@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import "./style.scss";
 import { createClient } from "@supabase/supabase-js";
-import { useGameStore } from "./store/gameStore";
+import { useGameStore } from "../../store/gameStore";
 import Button from "@mui/material/Button";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;

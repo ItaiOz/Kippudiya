@@ -1,14 +1,6 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import HomeIcon from "@mui/icons-material/Home";
-import HistoryIcon from "@mui/icons-material/History";
-import LeaderboardIcon from "@mui/icons-material/Leaderboard";
-import GroupsIcon from "@mui/icons-material/Groups";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import FaCards from "react-icons/fa";
 import {
   FOOTER_CONFIG,
   FooterIconDictionary,
@@ -16,22 +8,9 @@ import {
 } from "./footer.config";
 
 export const FooterNavigation: React.FC<any> = () => {
-  const [value, setValue] = useState(0);
   const [activeButton, setActiveButton] = useState(0);
 
   const navigate = useNavigate();
-
-  const style = {
-    backgroundColor: "#2c2c2e",
-    color: "#b5b5b5",
-    maxWidth: "45px",
-    fontSize: "12px",
-  };
-
-  const buttonContainerStyle = {
-    backgroundColor: "#2c2c2e",
-    color: "#b5b5b5",
-  };
 
   const handleClick = (buttonId: number) => {
     console.log(buttonId);

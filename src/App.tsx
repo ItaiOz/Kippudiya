@@ -1,10 +1,10 @@
 import React from "react";
-import { MainMenu } from "./MainMenu";
-import { GameZone } from "./GameZone/GameZone";
-import { PlayersRoster } from "./PlayersRoster";
-import { Leaderboard } from "./Leaderboard";
+import { MainMenu } from "./components/MainMenu";
+import { GameZone } from "./components/GameZone";
+import { PlayersRoster } from "./components/PlayerRoster";
+import { Leaderboard } from "./components/Leaderboard";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { FooterNavigation } from "./UI/Footer";
+import { FooterNavigation } from "./components/Footer";
 
 function App() {
   return (
