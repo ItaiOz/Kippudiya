@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Player } from "./Player";
 import { FiRefreshCw } from "react-icons/fi";
-import { AlertDialog } from "../UI/Modal/Modal";
+import { AlertDialog } from "../../common/Modal/Modal";
 import Button from "@mui/material/Button";
 import { createClient } from "@supabase/supabase-js";
-import { useGameStore } from "../store/gameStore";
-import { ApiLoader } from "../UI/ApiLoader";
+import { useGameStore } from "../../store/gameStore";
+import { ApiLoader } from "../../common/ApiLoader";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -20,8 +20,8 @@ export const GamePlay: React.FC<any> = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
 
-  const gameId = useGameStore((state) => state.gameId);
-  const players = useGameStore((state) => state.players);
+  const gameId = useGameStore((state: any) => state.gameId);
+  const players = useGameStore((state: any) => state.players);
 
   const onKipudConfirm = async () => {
     setIsLoading(true);
@@ -171,7 +171,7 @@ export const GamePlay: React.FC<any> = () => {
           value={selectedNewPlayer}
         >
           <option>Select...</option>
-          {players.map((player, index) => (
+          {players.map((player: any, index: number) => (
             <option key={index}>{player}</option>
           ))}
         </select>

@@ -3,7 +3,6 @@ import "./style.scss";
 import ReactDOM from "react-dom";
 
 export const ApiLoader = () => {
-  const loaderStyles = {};
 
   const loader = (
     <div className="api-loader">

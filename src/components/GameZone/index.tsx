@@ -1,7 +1,7 @@
 import React from "react";
 import { GameRegistration } from "./GameRegistration";
 import { GamePlay } from "./GamePlay";
-import { useGameStore } from "../store/gameStore";
+import { useGameStore } from "../../store/gameStore";
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;

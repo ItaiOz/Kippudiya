@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.btn {
+    background-color: #930a0c !important;
+    font-weight: bold !important;
+    transition: opacity 0.2s ease;
+}
+  
+.btn:active {
+opacity: 0.5;
+}
+
+.button:disabled {
+background-color: #ccc;
+border-color: #ccc;
+color: #666;
+}
+
+  
+  
