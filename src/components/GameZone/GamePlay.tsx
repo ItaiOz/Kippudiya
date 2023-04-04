@@ -166,7 +166,7 @@ export const GamePlay: React.FC<any> = () => {
       >
         <p>Select a new player to join the game</p>
         <select
-          className="add-new-player"
+          className="players-options"
           onChange={(e) => setSelectedNewPlayer(e.target.value)}
           value={selectedNewPlayer}
         >
