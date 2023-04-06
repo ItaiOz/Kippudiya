@@ -1,18 +1,5 @@
 .header {
   display: flex;
-  justify-content: space-between;
-  padding: 4px 12px;
-  align-items: center;
+  justify-content: center;
   width: 100%;
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    .header-icon {
-      width: 32px;
-      object-fit: contain;
-      padding-right: 6px;
-      filter: invert(100%);
-    }
-  }
 }

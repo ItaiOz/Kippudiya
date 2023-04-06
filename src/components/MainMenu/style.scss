@@ -1,31 +1,137 @@
 .main-menu-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-
-  .insert-player-input {
     display: flex;
-    gap: 5px;
-  }
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    min-height: 400px;;
+    gap: 15px;
+    overflow: hidden;
+    padding: 20px 0;
+    .card-wrapper {
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        .custom-card-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 80px;
+            height: 150px;
+            background: rgb(221, 221, 221);
+            color: black;
+            overflow: hidden;
+            border: 1px solid rgba(3, 3, 3, 0.274);
+            border-radius: 8px;
+            transition: 0.2s ease-in-out;
+            &:hover {
+                cursor: pointer;
 
-  .btn {
-    background-color: #930a0c !important;
-    font-weight: bold !important;
-    transition: opacity 0.2s ease;
+                .custom-card-label {
+                    font-size: 14px;
+                }
+            }
+            .custom-card-label {
+                max-width: 40px;
+                line-height: 1;
+                font-size: 12px;
+                text-align: center;
+                transition: 0.2s ease-in-out;
 
-    &:hover {
-      background-color: inherit !important;
-      border: 1px solid #930a0c;
+            }
+            .custom-card-symbol__upper {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                transform: translate(-50%, -50%);
+                .card-symbol {
+                    width: 12px;
+                    height: 12px;
+                    object-fit: cover;
+                }
+            }
+            .custom-card-symbol__lower{
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                .card-symbol {
+                    width: 12px;
+                    height: 12px;
+                    object-fit: cover;
+                }
+            }
+
+            &:nth-child(1) {
+                transform: rotate(-15deg) translate(20px, 0px);
+                animation: cardInitAnimationFirstChild 0.2s ease-in;
+            }
+            &:nth-child(2) {
+                transform: rotate(-6deg) translate(10px, -20px);
+                animation: cardInitAnimationSecondChild 0.4s ease-in;
+            }
+            &:nth-child(3) {
+                transform: rotate(0deg) translate(0px, -25px);
+                animation: cardInitAnimationThirdChild 0.6s ease-in;
+            }
+            &:nth-child(4) {
+                transform: rotate(6deg) translate(-10px, -20px);
+                animation: cardInitAnimationFourthChild 0.8s ease-in;
+            }
+            &:nth-child(5) {
+                transform: rotate(18deg) translate(-22px, 4px);
+                animation: cardInitAnimationFifthChild 1s ease-in;
+            }
+        }
     }
-  }
+    .insert-player-input {
+        display: flex;
+        gap: 5px;
+    }
 
-  .btn:active {
-    opacity: 0.5;
-  }
-
-  .button:disabled {
-    background-color: #ccc;
-    border-color: #ccc;
-    color: #666;
-  }
 }
+
+
+@keyframes cardInitAnimationFirstChild {
+    from {
+        transform: rotate(-15deg) translate(-20px, -200px);
+    } to {
+        transform: rotate(-15deg) translate(-20px, 0px);
+    }
+}
+
+@keyframes cardInitAnimationSecondChild {
+    from {
+        transform: rotate(-6deg) translate(-10px, -200px);
+    } to {
+        transform: rotate(-6deg) translate(-10px, -20px);
+    }
+}
+
+@keyframes cardInitAnimationThirdChild {
+    from {
+        transform: rotate(0deg) translate(0px, -200px);
+    } to {
+        transform: rotate(0deg) translate(0px, -25px);
+    }
+}
+
+@keyframes cardInitAnimationFourthChild {
+    from {
+        transform: rotate(6deg) translate(-10px, -200px);
+    } to {
+        transform: rotate(6deg) translate(-10px, -15px);
+    }
+}
+
+@keyframes cardInitAnimationFifthChild {
+    from {
+        transform: rotate(18deg) translate(-22px, -200px);
+    } to {
+        transform: rotate(18deg) translate(-22px, 20px);
+    }
+}
+
