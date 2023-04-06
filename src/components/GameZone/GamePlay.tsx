@@ -3,96 +3,35 @@ import { Player } from "./Player";
 import { FiRefreshCw } from "react-icons/fi";
 import { AlertDialog } from "../../common/Modal/Modal";
 import Button from "@mui/material/Button";
-import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../../store/gameStore";
 import { ApiLoader } from "../../common/ApiLoader";
+import { useSupabaseRequests } from "../../hooks/useSupabaseRequests";
 
-const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
-const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
-
-const supabase = createClient(supabaseUrl, supabaseKey);
 export const GamePlay: React.FC<any> = () => {
-  const [isKipudModalOpen, setIsKipudModalOpen] = useState(false);
-  const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
-  const [playersBalance, setPlayersBalance]: any = useState({});
-  const [balanceChanges, setBalanceChanges] = useState({});
   const [toggleRefresh, setToggleRefresh] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
+  const [isEndGameModalOpen, setIsEndGameModalOpen] = useState(false);
 
-  const gameId = useGameStore((state: any) => state.gameId);
+  const {
+    retrieveGameData,
+    onPlayerBalanceChange,
+    handleKipud,
+    onKipudConfirm,
+    setIsKipudModalOpen,
+    onAddPlayer,
+    setIsAddPlayerModalOpen,
+    setSelectedNewPlayer,
+    onEndGame,
+    selectedNewPlayer,
+    balanceChanges,
+    playersBalance,
+    isLoading,
+    isKipudModalOpen,
+    isAddPlayerModalOpen,
+  } = useSupabaseRequests();
+
   const players = useGameStore((state: any) => state.players);
 
-  const onKipudConfirm = async () => {
-    setIsLoading(true);
-
-    const { data, error } = await supabase
-      .from("poker-sessions")
-      .insert({ game_id: gameId, mekaped: "someone", players: playersBalance })
-      .select();
-
-    if (data) {
-      retrieveGameData();
-    }
-    if (error) console.log(error);
-    setIsKipudModalOpen(false);
-
-    setIsLoading(false);
-  };
-
-  const retrieveGameData = async () => {
-    setIsLoading(true);
-
-    const { data, error } = await supabase
-      .from("poker-sessions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(1);
-
-    if (data) {
-      setPlayersBalance(data[0].players);
-    }
-    if (error) console.log(error);
-
-    setIsLoading(false);
-  };
-
-  const getLatestPlayersBalance = async () => {
-    const { data, error } = await supabase
-      .from("poker-sessions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(1);
-
-    if (data) {
-      return data[0].players;
-    }
-    if (error) console.log(error);
-    return null;
-  };
-
-  const onPlayerBalanceChange = (name: string, count: number) => {
-    const tempPlayers: any = { ...playersBalance };
-    tempPlayers[name] = count;
-    setPlayersBalance(tempPlayers);
-  };
-
-  const handleKipud = () => {
-    setIsKipudModalOpen(true);
-    const balance = getLatestPlayersBalance();
-    balance.then((previousBalance) => {
-      const balanceDiff = Object.entries(previousBalance).reduce(
-        (acc: any, [key, value]: any) => {
-          if (previousBalance[key] - playersBalance[key] !== 0)
-            acc[key] = playersBalance[key] - previousBalance[key];
-
-          return acc;
-        },
-        {}
-      );
-      setBalanceChanges(balanceDiff);
-    });
-  };
+  console.log(playersBalance);
 
   useEffect(() => {
     retrieveGameData();
@@ -131,32 +70,6 @@ export const GamePlay: React.FC<any> = () => {
     );
   };
 
-  const onAddPlayer = async () => {
-    const found = Object.keys(playersBalance).find(
-      (player) => player === selectedNewPlayer
-    );
-    if (found) return;
-
-    const tempNewBalance = { ...playersBalance };
-    tempNewBalance[selectedNewPlayer] = 1;
-    setPlayersBalance(tempNewBalance);
-
-    setIsLoading(true);
-
-    const { data, error } = await supabase
-      .from("poker-sessions")
-      .insert({ game_id: gameId, mekaped: "someone", players: tempNewBalance })
-      .select();
-
-    if (data) {
-      retrieveGameData();
-    }
-    if (error) console.log(error);
-    setIsAddPlayerModalOpen(false);
-
-    setIsLoading(false);
-  };
-
   const renderAddPlayerModal = () => {
     return (
       <AlertDialog
@@ -179,8 +92,28 @@ export const GamePlay: React.FC<any> = () => {
     );
   };
 
+  const renderEndGameModal = () => {
+    return (
+      <AlertDialog
+        isOpen={isEndGameModalOpen}
+        onApprove={() => onEndGame()}
+        onClose={() => setIsEndGameModalOpen(false)}
+      >
+        <p>Are you sure you want to end the game?</p>
+      </AlertDialog>
+    );
+  };
+
+  if (isLoading) return <ApiLoader />;
+
   return (
     <>
+      <div className="game-play-title">
+        <span>Game is in progress</span>
+        <span className="dot-1">.</span>
+        <span className="dot-2">.</span>
+        <span className="dot-3">.</span>
+      </div>
       <div className="players-balance">
         {Object.entries(playersBalance).map(([player, balance]: any, index) => (
           <Player
@@ -217,9 +150,17 @@ export const GamePlay: React.FC<any> = () => {
         >
           Add New Player
         </Button>
-        {renderKipudModal()}
-        {renderAddPlayerModal()}
       </div>
+      <Button
+        size={"small"}
+        variant="contained"
+        onClick={() => setIsEndGameModalOpen(true)}
+      >
+        End Game
+      </Button>
+      {renderKipudModal()}
+      {renderAddPlayerModal()}
+      {renderEndGameModal()}
     </>
   );
 };
