@@ -1,12 +1,11 @@
-@import './general.scss';
+@import "./general.scss";
 
 .App {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 25px;
   max-width: 100vw;
   min-height: 100vh;
   overflow: hidden;
 }
-
-

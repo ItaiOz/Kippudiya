@@ -32,6 +32,7 @@
   gap: 15px;
   font-size: 25px;
   font-weight: bold;
+  color: rgb(175, 175, 175);
 
   .players-balance {
     width: 100%;
@@ -152,5 +153,67 @@
       padding-bottom: 10px;
       padding-right: 10px;
     }
+  }
+}
+
+.game-play-title {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // font-size: 1.5rem;
+  // font-weight: bold;
+  letter-spacing: 0.1rem;
+  // text-transform: uppercase;
+}
+
+.game-play-title span:not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.game-play-title span:nth-child(2) {
+  animation: dot-1 2s infinite;
+}
+
+.game-play-title span:nth-child(3) {
+  animation: dot-2 2s infinite;
+}
+
+.game-play-title span:nth-child(4) {
+  animation: dot-3 2s infinite;
+}
+
+@keyframes dot-1 {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes dot-2 {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes dot-3 {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
   }
 }

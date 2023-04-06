@@ -18,6 +18,8 @@ export const GameRegistration: React.FC<any> = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const name = localStorage.getItem("userName");
+
   const players = useGameStore((state) => state.players);
   const retrievePlayers = useGameStore((state) => state.retrievePlayers);
 
@@ -57,7 +59,9 @@ export const GameRegistration: React.FC<any> = () => {
     });
   };
 
-  const startGame = async (name: string) => {
+  const startGame = async (name: any) => {
+    localStorage.setItem("userName", name);
+
     let gameId;
     const { data } = await supabase
       .from("games")
@@ -123,7 +127,7 @@ export const GameRegistration: React.FC<any> = () => {
         disabled={!isGameAvialable}
         variant="contained"
         className="start-game-btn btn"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => (name ? startGame(name) : setIsModalOpen(true))}
       >
         Start Game!
       </Button>
