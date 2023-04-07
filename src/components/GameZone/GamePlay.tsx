@@ -31,8 +31,6 @@ export const GamePlay: React.FC<any> = () => {
 
   const players = useGameStore((state: any) => state.players);
 
-  console.log(playersBalance);
-
   useEffect(() => {
     retrieveGameData();
   }, [toggleRefresh]);
