@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../store/gameStore";
+import { Player } from "../components/GameZone/Player";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -15,13 +16,32 @@ export const useSupabaseRequests = () => {
   const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
   const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
 
+  const name = localStorage.getItem("userName");
+
   const gameId = useGameStore((state: any) => state.gameId);
+  const setIsGameOn = useGameStore((state) => state.setIsGameOn);
 
   const onKipudConfirm = async () => {
     setIsLoading(true);
+
+    // Retrieve the last inserted ID from the table
+    const { data: lastRecord, error: getError } = await supabase
+      .from("poker-sessions")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+
+    // // Generate a new ID by incrementing the last inserted ID
+    const nextId = lastRecord ? lastRecord[0].id + 1 : 1;
+
     const { data, error } = await supabase
       .from("poker-sessions")
-      .insert({ game_id: gameId, mekaped: "someone", players: playersBalance })
+      .insert({
+        id: nextId,
+        game_id: gameId,
+        mekaped: name,
+        players: playersBalance,
+      })
       .select();
     if (data) {
       retrieveGameData();
@@ -77,7 +97,7 @@ export const useSupabaseRequests = () => {
     setIsLoading(true);
     const { data, error } = await supabase
       .from("poker-sessions")
-      .insert({ game_id: gameId, mekaped: "someone", players: tempNewBalance })
+      .insert({ game_id: gameId, mekaped: name, players: tempNewBalance })
       .select();
     if (data) {
       retrieveGameData();
@@ -88,14 +108,20 @@ export const useSupabaseRequests = () => {
   };
 
   const onEndGame = async () => {
-    const currentDate = new Date();
-    const timestamp = currentDate.getTime();
     setIsLoading(true);
 
     const { data, error } = await supabase
       .from("games")
-      .insert({ game_id: gameId, ended_at: currentDate.getTime() })
-      .select();
+      .update({ ended_at: new Date().toISOString(), players: playersBalance })
+      .eq("id", gameId);
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+    console.log(data);
+    setIsGameOn(false);
+    setIsLoading(false);
   };
 
   const retrieveGameData = async () => {

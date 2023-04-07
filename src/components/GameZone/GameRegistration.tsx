@@ -63,23 +63,46 @@ export const GameRegistration: React.FC<any> = () => {
     localStorage.setItem("userName", name);
 
     let gameId;
+
+    // Retrieve the last inserted ID from the table
+    const { data: lastRecord, error: getError } = await supabase
+      .from("games")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+
+    // // Generate a new ID by incrementing the last inserted ID
+    const nextId = lastRecord ? lastRecord[0].id + 1 : 1;
+
     const { data } = await supabase
       .from("games")
-      .insert([{ players: selectedPlayers }])
+      .insert([{ id: nextId }])
       .select();
     if (data) {
       gameId = data[0].id;
       setGameId(gameId);
-    } else console.log("fix it");
-
+    } else {
+      console.log("fix it");
+      return;
+    }
     const players = selectedPlayers.reduce((acc: any, currVal: string) => {
       acc[currVal] = 1;
       return acc;
     }, {});
 
+    const { data: lastSessionRecord } = await supabase
+      .from("poker-sessions")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+
+    const nextSessionId = lastSessionRecord ? lastSessionRecord[0].id + 1 : 1;
+
     const { data: sessionData, error } = await supabase
       .from("poker-sessions")
-      .insert([{ game_id: gameId, mekaped: name, players: players }])
+      .insert([
+        { id: nextSessionId, game_id: gameId, mekaped: name, players: players },
+      ])
       .select();
 
     if (error) console.log(error);
