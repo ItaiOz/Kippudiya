@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../store/gameStore";
-import { Player } from "../components/GameZone/Player";
+import { useNavigate } from "react-router-dom";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -9,17 +9,19 @@ const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const useSupabaseRequests = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [playersBalance, setPlayersBalance]: any = useState({});
   const [isKipudModalOpen, setIsKipudModalOpen] = useState(false);
   const [balanceChanges, setBalanceChanges] = useState({});
   const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
   const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const name = localStorage.getItem("userName");
 
   const gameId = useGameStore((state: any) => state.gameId);
   const setIsGameOn = useGameStore((state) => state.setIsGameOn);
+  const setIsLoading = useGameStore((state: any) => state.setIsLoading);
 
   const onKipudConfirm = async () => {
     setIsLoading(true);
@@ -65,6 +67,7 @@ export const useSupabaseRequests = () => {
   };
 
   const handleKipud = () => {
+    console.log(gameId);
     setIsKipudModalOpen(true);
     const balance = getLatestPlayersBalance();
     balance.then((previousBalance) => {
@@ -119,9 +122,10 @@ export const useSupabaseRequests = () => {
       console.log(error);
       return;
     }
-    console.log(data);
+
     setIsGameOn(false);
     setIsLoading(false);
+    navigate("/post-game");
   };
 
   const retrieveGameData = async () => {
@@ -152,7 +156,6 @@ export const useSupabaseRequests = () => {
     setSelectedNewPlayer,
     onEndGame,
     selectedNewPlayer,
-    isLoading,
     playersBalance,
     balanceChanges,
     isKipudModalOpen,
