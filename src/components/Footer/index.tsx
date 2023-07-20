@@ -13,7 +13,6 @@ export const FooterNavigation: React.FC<any> = () => {
   const navigate = useNavigate();
 
   const handleClick = (buttonId: number) => {
-    console.log(buttonId);
     setActiveButton(buttonId);
 
     switch (buttonId) {

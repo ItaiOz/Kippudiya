@@ -10,14 +10,17 @@ interface IGame {
   isGameOn: boolean;
   players: string[];
   gameId: number;
+  isLoading: boolean;
   setIsGameOn: (value: boolean) => void;
   setPlayers: (retrievedPlayers: string[]) => void;
   retrievePlayers: () => void;
   setGameId: (num: number) => void;
+  setIsLoading: (val: boolean) => void;
 }
 
 export const useGameStore = create<IGame>((set) => ({
   isGameOn: false,
+  isLoading: false,
   players: [],
   setIsGameOn: (value: boolean) => set({ isGameOn: value }),
   setPlayers: (retrievedPlayers: string[]) =>
@@ -36,4 +39,5 @@ export const useGameStore = create<IGame>((set) => ({
   },
   gameId: 0,
   setGameId: (num: number) => set({ gameId: num }),
+  setIsLoading: (val: boolean) => set({ isLoading: val }),
 }));

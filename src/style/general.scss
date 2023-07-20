@@ -4,9 +4,14 @@
 
 html,
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  background: #040303;
+  background-image: url("../assets/spotlights-shining-down-into-grunge-interior.jpg");
+  background-color: gray;
+  background-blend-mode: multiply;
+  background-size: cover;
+  background-size: 100% 100%;
   color: white;
   font-family: Arial, Helvetica, sans-serif;
 }
