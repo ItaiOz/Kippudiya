@@ -13,6 +13,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export const GameRegistration: React.FC<any> = () => {
   const setIsGameOn = useGameStore((state) => state.setIsGameOn);
   const setGameId = useGameStore((state) => state.setGameId);
+  const setIsLoading = useGameStore((state) => state.setIsLoading);
 
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState("");
@@ -62,6 +63,8 @@ export const GameRegistration: React.FC<any> = () => {
   const startGame = async (name: any) => {
     localStorage.setItem("userName", name);
 
+    setIsLoading(true);
+
     let gameId;
 
     // Retrieve the last inserted ID from the table
@@ -105,6 +108,7 @@ export const GameRegistration: React.FC<any> = () => {
       ])
       .select();
 
+    setIsLoading(false);
     if (error) console.log(error);
     if (sessionData) setIsGameOn(true);
   };

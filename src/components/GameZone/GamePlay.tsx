@@ -4,8 +4,9 @@ import { FiRefreshCw } from "react-icons/fi";
 import { AlertDialog } from "../../common/Modal/Modal";
 import Button from "@mui/material/Button";
 import { useGameStore } from "../../store/gameStore";
-import { ApiLoader } from "../../common/ApiLoader";
 import { useSupabaseRequests } from "../../hooks/useSupabaseRequests";
+import { FaWhatsapp } from "react-icons/fa";
+import { WhatsappShareButton, WhatsappIcon } from "react-share";
 
 export const GamePlay: React.FC<any> = () => {
   const [toggleRefresh, setToggleRefresh] = useState(false);
@@ -24,7 +25,6 @@ export const GamePlay: React.FC<any> = () => {
     selectedNewPlayer,
     balanceChanges,
     playersBalance,
-    isLoading,
     isKipudModalOpen,
     isAddPlayerModalOpen,
   } = useSupabaseRequests();
@@ -34,10 +34,6 @@ export const GamePlay: React.FC<any> = () => {
   useEffect(() => {
     retrieveGameData();
   }, [toggleRefresh]);
-
-  if (isLoading) {
-    return <ApiLoader />;
-  }
 
   const renderKipudModal = () => {
     return (
@@ -102,7 +98,17 @@ export const GamePlay: React.FC<any> = () => {
     );
   };
 
-  if (isLoading) return <ApiLoader />;
+  const shareToWhatsApp = () => {
+    let text = "";
+    console.log(playersBalance);
+
+    Object.entries(playersBalance).map(([name, balance]) => {
+      text = text + `${name} ${balance}\n`;
+    });
+
+    const url = `whatsapp://send?text=${encodeURIComponent(text)}`;
+    window.location.href = url;
+  };
 
   return (
     <>
@@ -111,6 +117,18 @@ export const GamePlay: React.FC<any> = () => {
         <span className="dot-1">.</span>
         <span className="dot-2">.</span>
         <span className="dot-3">.</span>
+      </div>
+      <div className="game-play-upper-btns">
+        <button
+          className="refresh-button"
+          onClick={() => setToggleRefresh(!toggleRefresh)}
+        >
+          <FiRefreshCw />
+          <span className="refresh-txt">Refresh</span>
+        </button>
+        <button className="whatsapp-btn" onClick={shareToWhatsApp}>
+          <FaWhatsapp color="white" size={40} />
+        </button>
       </div>
       <div className="players-balance">
         {Object.entries(playersBalance).map(([player, balance]: any, index) => (
@@ -126,15 +144,7 @@ export const GamePlay: React.FC<any> = () => {
       <div className="actions-buttons-block">
         <Button
           size={"small"}
-          className="refresh-button"
-          variant="contained"
-          onClick={() => setToggleRefresh(!toggleRefresh)}
-        >
-          <FiRefreshCw />
-        </Button>
-        <Button
-          size={"small"}
-          className="button btn"
+          className="action-button"
           variant="contained"
           onClick={handleKipud}
         >
@@ -142,20 +152,21 @@ export const GamePlay: React.FC<any> = () => {
         </Button>
         <Button
           size={"small"}
-          className="add-player-btn"
+          className="action-button"
           variant="contained"
           onClick={() => setIsAddPlayerModalOpen(true)}
         >
           Add New Player
         </Button>
+        <Button
+          size={"small"}
+          className="action-button"
+          variant="contained"
+          onClick={() => setIsEndGameModalOpen(true)}
+        >
+          End Game
+        </Button>
       </div>
-      <Button
-        size={"small"}
-        variant="contained"
-        onClick={() => setIsEndGameModalOpen(true)}
-      >
-        End Game
-      </Button>
       {renderKipudModal()}
       {renderAddPlayerModal()}
       {renderEndGameModal()}

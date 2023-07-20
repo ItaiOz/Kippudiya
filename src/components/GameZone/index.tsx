@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { GameRegistration } from "./GameRegistration";
 import { GamePlay } from "./GamePlay";
 import { useGameStore } from "../../store/gameStore";
@@ -12,6 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export const GameZone = () => {
   const isGameOn = useGameStore((state) => state.isGameOn);
   const setIsGameOn = useGameStore((state) => state.setIsGameOn);
+  const setGameId = useGameStore((state) => state.setGameId);
 
   const gameOnCheck = async () => {
     const { data: rows, error } = await supabase
@@ -24,7 +25,10 @@ export const GameZone = () => {
       console.error(error);
       return;
     }
-    if (rows[0].ended_at == null) setIsGameOn(true);
+    if (rows[0].ended_at === null) {
+      setIsGameOn(true);
+      setGameId(rows[0].id);
+    }
   };
 
   useEffect(() => {
