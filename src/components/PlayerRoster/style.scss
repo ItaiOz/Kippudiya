@@ -1,45 +1,47 @@
 .players-roster-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  
-    .user-list {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      max-height: 50vh;
-      overflow: scroll;
-  
-      li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-    }
-    font-size: 25px;
-    font-weight: bold;
-    .input-one-line {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .user-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 50vh;
+    overflow: scroll;
+
+    li {
       display: flex;
-      gap: 5px;
-  
-      input {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        outline: none;
-        transition: border-color 0.2s ease-in-out;
-      }
-      input:focus {
-        border-color: #930a0c 3px solid;
-        box-shadow: 0 0 15px rgba(230, 99, 99, 0.75);
-        outline: none;
-      }
-      .add-players-button {
-        font-size: 25px;
-      }
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
   }
+  font-size: 25px;
+  font-weight: bold;
+  .input-one-line {
+    display: flex;
+    gap: 5px;
+
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s ease-in-out;
+    }
+    input:focus {
+      border-color: #930a0c 3px solid;
+      box-shadow: 0 0 15px rgba(230, 99, 99, 0.75);
+      outline: none;
+    }
+    .add-players-button {
+      font-size: 25px;
+      background-color: #930a0c;
+      border-radius: 10px;
+    }
+  }
+}

@@ -1,18 +1,19 @@
-.modal-confirm-body {
-  font-weight: bold;
-
-  .players-changes {
-    font-size: 1.4em;
-    color: black;
-    display: flex;
-    width: 50%;
-    justify-content: space-between;
+.alert-dialog-modal {
+  .modal-confirm-body {
     font-weight: bold;
+
+    .players-changes {
+      font-size: 1.4em;
+      color: black;
+      display: flex;
+      width: 50%;
+      justify-content: space-between;
+      font-weight: bold;
+    }
   }
 }
-
 .players-options {
-  font-family: "alfa slab";
+  font-family: "Arial";
   border-radius: 5px;
   width: 150px;
   padding: 5px 10px;

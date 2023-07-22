@@ -23,6 +23,7 @@ export const GameRegistration: React.FC<any> = () => {
 
   const players = useGameStore((state) => state.players);
   const retrievePlayers = useGameStore((state) => state.retrievePlayers);
+  const onMekapedLogged = useGameStore((state) => state.onMekapedLogged);
 
   const optionRef: any = useRef();
   const playerRef: any = useRef();
@@ -62,6 +63,8 @@ export const GameRegistration: React.FC<any> = () => {
 
   const startGame = async (name: any) => {
     localStorage.setItem("userName", name);
+    onMekapedLogged(name);
+    setIsModalOpen(false);
 
     setIsLoading(true);
 
@@ -141,14 +144,9 @@ export const GameRegistration: React.FC<any> = () => {
             <option key={index}>{player}</option>
           ))}
         </select>
-        <Button
-          className="add-button btn"
-          size={"small"}
-          variant="contained"
-          onClick={addPlayer}
-        >
+        <button className="add-button" onClick={addPlayer}>
           +
-        </Button>
+        </button>
       </div>
       <Button
         disabled={!isGameAvialable}

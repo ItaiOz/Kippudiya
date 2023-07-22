@@ -11,17 +11,20 @@ interface IGame {
   players: string[];
   gameId: number;
   isLoading: boolean;
+  mekaped: string;
   setIsGameOn: (value: boolean) => void;
   setPlayers: (retrievedPlayers: string[]) => void;
   retrievePlayers: () => void;
   setGameId: (num: number) => void;
   setIsLoading: (val: boolean) => void;
+  onMekapedLogged: (name: string) => void;
 }
 
 export const useGameStore = create<IGame>((set) => ({
   isGameOn: false,
   isLoading: false,
   players: [],
+  mekaped: "",
   setIsGameOn: (value: boolean) => set({ isGameOn: value }),
   setPlayers: (retrievedPlayers: string[]) =>
     set({ players: retrievedPlayers }),
@@ -40,4 +43,5 @@ export const useGameStore = create<IGame>((set) => ({
   gameId: 0,
   setGameId: (num: number) => set({ gameId: num }),
   setIsLoading: (val: boolean) => set({ isLoading: val }),
+  onMekapedLogged: (name: string) => set({ mekaped: name }),
 }));

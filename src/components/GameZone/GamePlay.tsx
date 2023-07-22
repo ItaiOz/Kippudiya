@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Player } from "./Player";
-import { FiRefreshCw } from "react-icons/fi";
-import { AlertDialog } from "../../common/Modal/Modal";
 import Button from "@mui/material/Button";
 import { useGameStore } from "../../store/gameStore";
 import { useSupabaseRequests } from "../../hooks/useSupabaseRequests";
-import { FaWhatsapp } from "react-icons/fa";
-import { WhatsappShareButton, WhatsappIcon } from "react-share";
+import {
+  renderKipudModal,
+  renderAddPlayerModal,
+  renderEndGameModal,
+} from "./utils";
+import { UpperActionButtons } from "./ActionButtons/UpperActionButtons";
+import { InputModal } from "../../common/Modal/InputModal";
 
 export const GamePlay: React.FC<any> = () => {
   const [toggleRefresh, setToggleRefresh] = useState(false);
   const [isEndGameModalOpen, setIsEndGameModalOpen] = useState(false);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+
+  const userName = localStorage.getItem("userName");
+  const onMekapedLogged = useGameStore((state) => state.onMekapedLogged);
 
   const {
     retrieveGameData,
@@ -31,76 +38,26 @@ export const GamePlay: React.FC<any> = () => {
 
   const players = useGameStore((state: any) => state.players);
 
+  const renderUserModal = () => {
+    return (
+      <InputModal
+        isOpen={isUserModalOpen}
+        onCloseModal={() => setIsUserModalOpen(false)}
+        onInputInserted={(name: string) => {
+          localStorage.setItem("userName", name);
+          onMekapedLogged(name);
+          setIsUserModalOpen(false);
+        }}
+      />
+    );
+  };
+
   useEffect(() => {
     retrieveGameData();
   }, [toggleRefresh]);
 
-  const renderKipudModal = () => {
-    return (
-      <AlertDialog
-        isOpen={isKipudModalOpen}
-        onApprove={onKipudConfirm}
-        onClose={() => setIsKipudModalOpen(false)}
-        isDisabled={Object.keys(balanceChanges).length === 0}
-      >
-        {balanceChanges && (
-          <>
-            {Object.keys(balanceChanges).length > 0 ? (
-              <p>These Following changes will be made</p>
-            ) : (
-              <p>No changes have been made so far</p>
-            )}
-            {Object.entries(balanceChanges).map(
-              ([key, value]: any, index: number) => (
-                <div className="players-changes" key={index}>
-                  <span>{key}</span>
-                  <span>{value > 0 ? `+${value}` : value}</span>
-                </div>
-              )
-            )}
-          </>
-        )}
-      </AlertDialog>
-    );
-  };
-
-  const renderAddPlayerModal = () => {
-    return (
-      <AlertDialog
-        isOpen={isAddPlayerModalOpen}
-        onApprove={() => onAddPlayer()}
-        onClose={() => setIsAddPlayerModalOpen(false)}
-      >
-        <p>Select a new player to join the game</p>
-        <select
-          className="players-options"
-          onChange={(e) => setSelectedNewPlayer(e.target.value)}
-          value={selectedNewPlayer}
-        >
-          <option>Select...</option>
-          {players.map((player: any, index: number) => (
-            <option key={index}>{player}</option>
-          ))}
-        </select>
-      </AlertDialog>
-    );
-  };
-
-  const renderEndGameModal = () => {
-    return (
-      <AlertDialog
-        isOpen={isEndGameModalOpen}
-        onApprove={() => onEndGame()}
-        onClose={() => setIsEndGameModalOpen(false)}
-      >
-        <p>Are you sure you want to end the game?</p>
-      </AlertDialog>
-    );
-  };
-
   const shareToWhatsApp = () => {
     let text = "";
-    console.log(playersBalance);
 
     Object.entries(playersBalance).map(([name, balance]) => {
       text = text + `${name} ${balance}\n`;
@@ -118,18 +75,10 @@ export const GamePlay: React.FC<any> = () => {
         <span className="dot-2">.</span>
         <span className="dot-3">.</span>
       </div>
-      <div className="game-play-upper-btns">
-        <button
-          className="refresh-button"
-          onClick={() => setToggleRefresh(!toggleRefresh)}
-        >
-          <FiRefreshCw />
-          <span className="refresh-txt">Refresh</span>
-        </button>
-        <button className="whatsapp-btn" onClick={shareToWhatsApp}>
-          <FaWhatsapp color="white" size={40} />
-        </button>
-      </div>
+      <UpperActionButtons
+        onToggleRefresh={() => setToggleRefresh(!toggleRefresh)}
+        onWhatsappShare={shareToWhatsApp}
+      />
       <div className="players-balance">
         {Object.entries(playersBalance).map(([player, balance]: any, index) => (
           <Player
@@ -146,7 +95,7 @@ export const GamePlay: React.FC<any> = () => {
           size={"small"}
           className="action-button"
           variant="contained"
-          onClick={handleKipud}
+          onClick={() => (userName ? handleKipud() : setIsUserModalOpen(true))}
         >
           Kaped
         </Button>
@@ -154,7 +103,9 @@ export const GamePlay: React.FC<any> = () => {
           size={"small"}
           className="action-button"
           variant="contained"
-          onClick={() => setIsAddPlayerModalOpen(true)}
+          onClick={() =>
+            userName ? setIsAddPlayerModalOpen(true) : setIsUserModalOpen(true)
+          }
         >
           Add New Player
         </Button>
@@ -162,14 +113,29 @@ export const GamePlay: React.FC<any> = () => {
           size={"small"}
           className="action-button"
           variant="contained"
-          onClick={() => setIsEndGameModalOpen(true)}
+          onClick={() =>
+            userName ? setIsEndGameModalOpen(true) : setIsUserModalOpen(true)
+          }
         >
           End Game
         </Button>
       </div>
-      {renderKipudModal()}
-      {renderAddPlayerModal()}
-      {renderEndGameModal()}
+      {renderUserModal()}
+      {renderKipudModal(
+        isKipudModalOpen,
+        onKipudConfirm,
+        setIsKipudModalOpen,
+        balanceChanges
+      )}
+      {renderAddPlayerModal(
+        isAddPlayerModalOpen,
+        onAddPlayer,
+        setIsAddPlayerModalOpen,
+        setSelectedNewPlayer,
+        players,
+        selectedNewPlayer
+      )}
+      {renderEndGameModal(isEndGameModalOpen, onEndGame, setIsEndGameModalOpen)}
     </>
   );
 };
