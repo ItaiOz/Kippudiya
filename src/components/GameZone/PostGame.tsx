@@ -9,7 +9,6 @@ export const PostGame = () => {
 
   const shareScoreBoard = () => {
     let text = "";
-    console.log(playersBalance);
 
     Object.entries(playersBalance).map(([name, balance]) => {
       text = text + `${name} ${balance}\n`;

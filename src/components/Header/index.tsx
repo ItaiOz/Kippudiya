@@ -1,21 +1,9 @@
 import React, { useEffect } from "react";
 import "./style.scss";
+import { useGameStore } from "../../store/gameStore";
 
 export const Header: React.FC<any> = () => {
-  const name = localStorage.getItem("userName");
-
-  const handleStorageChange = (e: any) => {
-    if (e.key === "userName") {
-      const name = localStorage.getItem("userName");
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
+  const name = useGameStore((state: any) => state.mekaped);
 
   return (
     <div className="header">

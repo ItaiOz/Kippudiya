@@ -67,7 +67,6 @@ export const useSupabaseRequests = () => {
   };
 
   const handleKipud = () => {
-    console.log(gameId);
     setIsKipudModalOpen(true);
     const balance = getLatestPlayersBalance();
     balance.then((previousBalance) => {

@@ -20,6 +20,7 @@ export const FooterNavigation: React.FC<any> = () => {
         navigate("/");
         break;
       case 2:
+        navigate("/history");
         break;
       case 3:
         navigate("/leaderboard");
