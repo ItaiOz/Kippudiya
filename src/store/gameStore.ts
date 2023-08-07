@@ -18,13 +18,14 @@ interface IGame {
   setGameId: (num: number) => void;
   setIsLoading: (val: boolean) => void;
   onMekapedLogged: (name: string) => void;
+  retrieveMekapedName: () => void;
 }
 
 export const useGameStore = create<IGame>((set) => ({
   isGameOn: false,
   isLoading: false,
   players: [],
-  mekaped: "",
+  mekaped: localStorage.getItem("userName") || "",
   setIsGameOn: (value: boolean) => set({ isGameOn: value }),
   setPlayers: (retrievedPlayers: string[]) =>
     set({ players: retrievedPlayers }),
@@ -44,4 +45,8 @@ export const useGameStore = create<IGame>((set) => ({
   setGameId: (num: number) => set({ gameId: num }),
   setIsLoading: (val: boolean) => set({ isLoading: val }),
   onMekapedLogged: (name: string) => set({ mekaped: name }),
+  retrieveMekapedName: () =>
+    set({
+      mekaped: localStorage.getItem("userName") || "",
+    }),
 }));
