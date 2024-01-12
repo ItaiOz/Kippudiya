@@ -35,15 +35,7 @@ export const GameZone = () => {
     gameOnCheck();
   }, []);
 
-  return (
-    <div className="game-zone-container">
-      {isGameOn ? (
-        <GamePlay />
-      ) : (
-        <>
-          <GameRegistration />
-        </>
-      )}
-    </div>
-  );
+  const renderGame = isGameOn ? <GamePlay /> : <GameRegistration />;
+
+  return <div className="game-zone-container">{renderGame}</div>;
 };

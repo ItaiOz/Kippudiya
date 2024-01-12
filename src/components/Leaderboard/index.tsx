@@ -1,17 +1,24 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useCalculateLeaderboard } from "../../hooks/useCalculateLeaderboard";
 
 export const Leaderboard = () => {
-  const navigate = useNavigate();
+  const { setPlayersTotalBalance, players } = useCalculateLeaderboard();
 
-  const handleClick = () => {
-    navigate("/post-game");
-  };
+  useEffect(() => {
+    setPlayersTotalBalance();
+  }, []);
 
   return (
     <>
       <div>Leader board will be here</div>
-      <button onClick={handleClick}>here</button>
+      <div>
+        {players.map((player: any) => (
+          <div key={player.id}>
+            <span>{player.name}</span>
+            <span>{player.balance}</span>
+          </div>
+        ))}
+      </div>
     </>
   );
 };
