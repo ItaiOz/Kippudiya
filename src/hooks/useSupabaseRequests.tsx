@@ -59,6 +59,7 @@ export const useSupabaseRequests = () => {
       .select("*")
       .order("created_at", { ascending: false })
       .limit(1);
+
     if (data) {
       return data[0].players;
     }
