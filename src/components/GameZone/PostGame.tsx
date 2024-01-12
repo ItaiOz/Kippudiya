@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSupabaseRequests } from "../../hooks/useSupabaseRequests";
 import { FaWhatsapp } from "react-icons/fa";
+import { createClient } from "@supabase/supabase-js";
+import { useCalculateLeaderboard } from "../../hooks/useCalculateLeaderboard";
+
+const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
+const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const PostGame = () => {
   const [sortedPlayersBalance, setSortedPlayersBalance] = useState({});
 
   const { retrieveGameData, playersBalance } = useSupabaseRequests();
+  const { updateTotalBalance } = useCalculateLeaderboard();
 
   const shareScoreBoard = () => {
     let text = "";
@@ -37,6 +45,7 @@ export const PostGame = () => {
   useEffect(() => {
     if (Object.keys(playersBalance).length > 0) {
       sortPlayers();
+      updateTotalBalance(playersBalance);
     }
   }, [playersBalance]);
 

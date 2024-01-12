@@ -82,6 +82,9 @@
   }
 
   .add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #930a0c;
     border-color: #930a0c;
     color: #ffffff;
@@ -176,6 +179,9 @@
       margin-top: 15px;
     }
 
+    .disabled {
+      opacity: 0.5;
+    }
     .tonights-players {
       display: flex;
       justify-content: space-between;

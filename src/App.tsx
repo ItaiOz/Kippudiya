@@ -10,6 +10,7 @@ import { Header } from "./components/Header";
 import { HOCLoader } from "./common/HOCLoader/HOCLoader";
 import { PostGame } from "./components/GameZone/PostGame";
 import { History } from "./components/History";
+import { ErrorPage } from "./common/ErrorPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/players-roster" element={<PlayersRoster />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/post-game" element={<PostGame />} />
+            <Route path="/error" element={<ErrorPage />} />
           </Routes>
           <FooterNavigation />
         </BrowserRouter>

@@ -1,8 +1,10 @@
 import React from "react";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
-import BlackHeart from "../../assets/heartBlack.png";
-import RedHeart from "../../assets/heartRed.png";
+import Spade from "../../assets/spade.png";
+import Club from "../../assets/clubs.png";
+import Diamond from "../../assets/diamond.png";
+import Heart from "../../assets/heartRed.png";
 
 export const MainMenu = () => {
   const navigate = useNavigate();
@@ -22,11 +24,11 @@ export const MainMenu = () => {
           onClick={() => navigate("/game-zone")}
         >
           <div className="custom-card-symbol__upper">
-            <img className="card-symbol" src={RedHeart} alt="icon" />
+            <img className="card-symbol" src={Heart} alt="icon" />
           </div>
           <div className="custom-card-label">Start Game</div>
           <div className="custom-card-symbol__lower">
-            <img className="card-symbol" src={RedHeart} alt="icon" />
+            <img className="card-symbol" src={Heart} alt="icon" />
           </div>
         </div>
         <div
@@ -34,11 +36,11 @@ export const MainMenu = () => {
           onClick={() => navigate("/players-roster")}
         >
           <div className="custom-card-symbol__upper">
-            <img className="card-symbol" src={BlackHeart} alt="icon" />
+            <img className="card-symbol" src={Club} alt="icon" />
           </div>
           <div className="custom-card-label">Players Roster</div>
           <div className="custom-card-symbol__lower">
-            <img className="card-symbol" src={BlackHeart} alt="icon" />
+            <img className="card-symbol" src={Club} alt="icon" />
           </div>
         </div>
         <div
@@ -46,11 +48,11 @@ export const MainMenu = () => {
           onClick={() => navigateToExternalLink()}
         >
           <div className="custom-card-symbol__upper">
-            <img className="card-symbol" src={RedHeart} alt="icon" />
+            <img className="card-symbol" src={Diamond} alt="icon" />
           </div>
           <div className="custom-card-label">Poker Calculator</div>
           <div className="custom-card-symbol__lower">
-            <img className="card-symbol" src={RedHeart} alt="icon" />
+            <img className="card-symbol" src={Diamond} alt="icon" />
           </div>
         </div>
         <div
@@ -58,25 +60,13 @@ export const MainMenu = () => {
           onClick={() => navigate("/game-zone")}
         >
           <div className="custom-card-symbol__upper">
-            <img className="card-symbol" src={BlackHeart} alt="icon" />
+            <img className="card-symbol" src={Spade} alt="icon" />
           </div>
           <div className="custom-card-label">House Rules</div>
           <div className="custom-card-symbol__lower">
-            <img className="card-symbol" src={BlackHeart} alt="icon" />
+            <img className="card-symbol" src={Spade} alt="icon" />
           </div>
         </div>
-        {/* <div
-          className="custom-card-button"
-          onClick={() => navigate("/game-zone")}
-        >
-          <div className="custom-card-symbol__upper">
-            <img className="card-symbol" src={RedHeart} alt="icon" />
-          </div>
-          <div className="custom-card-label">What To Order?</div>
-          <div className="custom-card-symbol__lower">
-            <img className="card-symbol" src={RedHeart} alt="icon" />
-          </div>
-        </div> */}
       </div>
     </div>
   );

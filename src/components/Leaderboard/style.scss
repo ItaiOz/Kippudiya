@@ -1,0 +1,26 @@
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 120px;
+  height: 450px;
+  overflow: scroll;
+
+  .player {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    animation: floatUp 1.5s ease-in forwards;
+  }
+
+  @keyframes floatUp {
+    from {
+      transform: translateY(100px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

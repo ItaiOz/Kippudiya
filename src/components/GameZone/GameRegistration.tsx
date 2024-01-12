@@ -151,7 +151,7 @@ export const GameRegistration: React.FC<any> = () => {
       <Button
         disabled={!isGameAvialable}
         variant="contained"
-        className="start-game-btn btn"
+        className={`start-game-btn btn ${!isGameAvialable ? "disabled" : ""}`}
         onClick={() => (name ? startGame(name) : setIsModalOpen(true))}
       >
         Start Game!

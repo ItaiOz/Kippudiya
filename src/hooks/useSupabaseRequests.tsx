@@ -48,7 +48,7 @@ export const useSupabaseRequests = () => {
     if (data) {
       retrieveGameData();
     }
-    if (error) console.log(error);
+    if (error) navigate("/error");
     setIsKipudModalOpen(false);
     setIsLoading(false);
   };
@@ -63,7 +63,7 @@ export const useSupabaseRequests = () => {
     if (data) {
       return data[0].players;
     }
-    if (error) console.log(error);
+    if (error) navigate("/error");
     return null;
   };
 
@@ -105,7 +105,7 @@ export const useSupabaseRequests = () => {
     if (data) {
       retrieveGameData();
     }
-    if (error) console.log(error);
+    if (error) navigate("/error");
     setIsAddPlayerModalOpen(false);
     setIsLoading(false);
   };
@@ -118,10 +118,7 @@ export const useSupabaseRequests = () => {
       .update({ ended_at: new Date().toISOString(), players: playersBalance })
       .eq("id", gameId);
 
-    if (error) {
-      console.log(error);
-      return;
-    }
+    if (error) navigate("/error");
 
     setIsGameOn(false);
     setIsLoading(false);
@@ -140,7 +137,7 @@ export const useSupabaseRequests = () => {
     if (data) {
       setPlayersBalance(data[0].players);
     }
-    if (error) console.log(error);
+    if (error) navigate("/error");
 
     setIsLoading(false);
   };
