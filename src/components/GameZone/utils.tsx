@@ -40,6 +40,7 @@ export const renderAddPlayerModal = (
   onAddPlayer: any,
   setIsAddPlayerModalOpen: any,
   setSelectedNewPlayer: any,
+  playersBalance: any,
   players: any,
   selectedNewPlayer: string
 ) => {
@@ -48,6 +49,7 @@ export const renderAddPlayerModal = (
       isOpen={isAddPlayerModalOpen}
       onApprove={() => onAddPlayer()}
       onClose={() => setIsAddPlayerModalOpen(false)}
+      isDisabled={!!playersBalance[selectedNewPlayer]}
     >
       <p>Select a new player to join the game</p>
       <select

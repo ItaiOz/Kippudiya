@@ -132,6 +132,7 @@ export const GamePlay: React.FC<any> = () => {
         onAddPlayer,
         setIsAddPlayerModalOpen,
         setSelectedNewPlayer,
+        playersBalance,
         players,
         selectedNewPlayer
       )}

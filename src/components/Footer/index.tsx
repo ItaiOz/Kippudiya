@@ -1,11 +1,8 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {
-  FOOTER_CONFIG,
-  FooterIconDictionary,
-  FooterItem,
-} from "./footer.config";
+import { FOOTER_CONFIG, FooterIconDictionary, FooterItem } from "./config";
+import "./style.scss";
 
 export const FooterNavigation: React.FC<any> = () => {
   const [activeButton, setActiveButton] = useState(0);
