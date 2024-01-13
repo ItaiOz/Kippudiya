@@ -16,7 +16,6 @@ export const GameRegistration: React.FC<any> = () => {
   const setIsLoading = useGameStore((state) => state.setIsLoading);
 
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
-  const [selectedOption, setSelectedOption] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const name = localStorage.getItem("userName");
@@ -24,9 +23,6 @@ export const GameRegistration: React.FC<any> = () => {
   const players = useGameStore((state) => state.players);
   const retrievePlayers = useGameStore((state) => state.retrievePlayers);
   const onMekapedLogged = useGameStore((state) => state.onMekapedLogged);
-
-  const optionRef: any = useRef();
-  const playerRef: any = useRef();
 
   const isGameAvialable = selectedPlayers.length > 3;
 
@@ -40,25 +36,16 @@ export const GameRegistration: React.FC<any> = () => {
     );
   };
 
-  const addPlayer = () => {
-    if (!selectedOption) return;
-    const isDuplicatedUser = selectedPlayers.find(
-      (player) => player === selectedOption
-    );
-    if (isDuplicatedUser) return;
-    const tempArr: any = [...selectedPlayers];
-    tempArr.push(selectedOption);
-    setSelectedPlayers(tempArr);
-  };
-
-  const onselectionchange = () => {
-    setSelectedOption(optionRef.current.value);
-  };
-
   const deletePlayer = (player: string) => {
     setSelectedPlayers((prevPlayers) => {
       return prevPlayers.filter((p) => p !== player);
     });
+  };
+
+  const onPlayerClicked = (playerName: string) => {
+    const temp = [...selectedPlayers];
+    temp.push(playerName);
+    setSelectedPlayers(temp);
   };
 
   const startGame = async (name: any) => {
@@ -123,30 +110,32 @@ export const GameRegistration: React.FC<any> = () => {
   return (
     <div className="game-preperation-container">
       <h5>Choose Tonight's Players</h5>
-      {selectedPlayers.map((player, index) => (
-        <div className="tonights-players" key={index}>
-          <span id={index.toString()} ref={playerRef}>
-            {player}
-          </span>
-          <button className="bin-button" onClick={() => deletePlayer(player)}>
-            <FaRegTrashAlt size={25} className="bin-icon" />
-          </button>
-        </div>
-      ))}
-      <div className="choose-player-block">
-        <select
-          className="players-options"
-          onChange={onselectionchange}
-          ref={optionRef}
-        >
-          <option>Select...</option>
-          {players.map((player, index) => (
-            <option key={index}>{player}</option>
-          ))}
-        </select>
-        <button className="add-button" onClick={addPlayer}>
-          +
-        </button>
+      <div className="chosen-players">
+        {selectedPlayers.map((player) => (
+          <div key={player} className="registered-player">
+            <li className="player-name">{player}</li>
+            <button className="bin-button" onClick={() => deletePlayer(player)}>
+              <FaRegTrashAlt size={25} />
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="choose-players-block">
+        {players.map((player) => {
+          const found = selectedPlayers.find(
+            (selectedPlayer: string) => selectedPlayer === player
+          );
+          return (
+            !found && (
+              <button
+                className="player-btn"
+                onClick={() => onPlayerClicked(player)}
+              >
+                {player}
+              </button>
+            )
+          );
+        })}
       </div>
       <Button
         disabled={!isGameAvialable}

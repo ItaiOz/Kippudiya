@@ -57,41 +57,34 @@
     width: 100%;
   }
 
-  .choose-player-block {
+  .choose-players-block {
+    max-width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 10px 5px 10px 0px;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    .player-btn {
+      width: min-content;
+      background-color: #930a0c;
+      border-color: #930a0c;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 8px 10px;
+      border-radius: 25px;
+      white-space: nowrap;
+    }
   }
 
   .bin-button {
     border: 2px #930a0c solid;
     background-color: #ffffff;
-    border-radius: 8px;
-    padding-top: 2px;
+    border-radius: 12px;
+    padding: 5px 10px;
     color: #930a0c;
   }
 
-  .players-options {
-    font-family: "Arial";
-    border-radius: 5px;
-    width: 150px;
-    padding: 5px 10px;
-    font-size: 25px;
-  }
-
-  .add-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #930a0c;
-    border-color: #930a0c;
-    color: #ffffff;
-    height: 50px;
-    width: 50px;
-    font-size: 25px;
-    font-weight: bold;
-    border-radius: 12px;
-  }
   .player-stats {
     display: flex;
     justify-content: space-between;
@@ -166,6 +159,8 @@
 
   .game-preperation-container {
     width: 80%;
+    padding-bottom: 60px;
+
     .start-game-btn {
       width: 100%;
       font-weight: bold;
@@ -177,16 +172,29 @@
       margin-top: 15px;
     }
 
+    .chosen-players {
+      margin-bottom: 10px;
+    }
     .disabled {
       opacity: 0.5;
     }
-    .tonights-players {
+
+    .registered-player {
       display: flex;
       justify-content: space-between;
       gap: 15px;
       list-style: none;
       padding-bottom: 10px;
       padding-right: 10px;
+
+      li.player-name {
+        display: flex;
+        align-items: center;
+        width: 75%;
+        white-space: nowrap;
+        list-style: none;
+        overflow: hidden;
+      }
     }
   }
 }

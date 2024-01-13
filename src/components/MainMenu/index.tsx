@@ -62,7 +62,7 @@ export const MainMenu = () => {
           <div className="custom-card-symbol__upper">
             <img className="card-symbol" src={Spade} alt="icon" />
           </div>
-          <div className="custom-card-label">House Rules</div>
+          <div className="custom-card-label">What to order</div>
           <div className="custom-card-symbol__lower">
             <img className="card-symbol" src={Spade} alt="icon" />
           </div>
