@@ -8,8 +8,10 @@ const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+type PlayerBalance = { [key: string]: number };
+
 export const useSupabaseRequests = () => {
-  const [playersBalance, setPlayersBalance]: any = useState({});
+  const [playersBalance, setPlayersBalance] = useState<PlayerBalance>({});
   const [isKipudModalOpen, setIsKipudModalOpen] = useState(false);
   const [balanceChanges, setBalanceChanges] = useState({});
   const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
@@ -94,13 +96,28 @@ export const useSupabaseRequests = () => {
       (player) => player === selectedNewPlayer
     );
     if (found) return;
+
+    const { data: lastRecord, error: getError } = await supabase
+      .from("poker-sessions")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+
+    // // Generate a new ID by incrementing the last inserted ID
+    const nextId = lastRecord?.[0].id + 1;
+
     const tempNewBalance = { ...playersBalance };
     tempNewBalance[selectedNewPlayer] = 1;
     setPlayersBalance(tempNewBalance);
     setIsLoading(true);
     const { data, error } = await supabase
       .from("poker-sessions")
-      .insert({ game_id: gameId, mekaped: name, players: tempNewBalance })
+      .insert({
+        id: nextId,
+        game_id: gameId,
+        mekaped: name,
+        players: tempNewBalance,
+      })
       .select();
     if (data) {
       retrieveGameData();
@@ -134,9 +151,7 @@ export const useSupabaseRequests = () => {
       .order("created_at", { ascending: false })
       .limit(1);
 
-    if (data) {
-      setPlayersBalance(data[0].players);
-    }
+    if (data) setPlayersBalance(data[0].players);
     if (error) navigate("/error");
 
     setIsLoading(false);

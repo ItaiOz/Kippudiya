@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Player } from "./Player";
-import Button from "@mui/material/Button";
 import { useGameStore } from "../../store/gameStore";
 import { useSupabaseRequests } from "../../hooks/useSupabaseRequests";
 import {
@@ -10,6 +8,7 @@ import {
 } from "./utils";
 import { UpperActionButtons } from "./ActionButtons/UpperActionButtons";
 import { InputModal } from "../../common/Modal/InputModal";
+import { PPlayer } from "./PPlayer";
 
 export const GamePlay: React.FC<any> = () => {
   const [toggleRefresh, setToggleRefresh] = useState(false);
@@ -67,6 +66,8 @@ export const GamePlay: React.FC<any> = () => {
     window.location.href = url;
   };
 
+  console.log(playersBalance);
+
   return (
     <>
       <div className="game-play-title">
@@ -81,44 +82,37 @@ export const GamePlay: React.FC<any> = () => {
       />
       <div className="players-balance">
         {Object.entries(playersBalance).map(([player, balance]: any, index) => (
-          <Player
-            toggle={toggleRefresh}
-            player={player}
-            playerBalance={balance}
+          <PPlayer
             key={index}
+            player={player}
+            balance={balance}
             onBalanceChange={onPlayerBalanceChange}
           />
         ))}
       </div>
       <div className="actions-buttons-block">
-        <Button
-          size={"small"}
-          className="action-button"
-          variant="contained"
+        <button
+          className="action-button btn"
           onClick={() => (userName ? handleKipud() : setIsUserModalOpen(true))}
         >
           Kaped
-        </Button>
-        <Button
-          size={"small"}
-          className="action-button"
-          variant="contained"
+        </button>
+        <button
+          className="action-button btn"
           onClick={() =>
             userName ? setIsAddPlayerModalOpen(true) : setIsUserModalOpen(true)
           }
         >
           Add New Player
-        </Button>
-        <Button
-          size={"small"}
-          className="action-button"
-          variant="contained"
+        </button>
+        <button
+          className="action-button btn"
           onClick={() =>
             userName ? setIsEndGameModalOpen(true) : setIsUserModalOpen(true)
           }
         >
           End Game
-        </Button>
+        </button>
       </div>
       {renderUserModal()}
       {renderKipudModal(
