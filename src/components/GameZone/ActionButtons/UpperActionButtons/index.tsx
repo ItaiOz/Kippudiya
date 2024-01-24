@@ -12,7 +12,7 @@ export const UpperActionButtons: React.FC<Props> = ({
 }: Props) => {
   return (
     <div className="game-play-upper-btns">
-      <button className="refresh-button" onClick={() => onToggleRefresh()}>
+      <button className="refresh-button btn" onClick={() => onToggleRefresh()}>
         <FiRefreshCw />
         <span className="refresh-txt">Refresh</span>
       </button>

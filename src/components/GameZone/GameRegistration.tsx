@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Button from "@mui/material/Button";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../../store/gameStore";
 import { InputModal } from "../../common/Modal/InputModal";
+import { useNavigate } from "react-router-dom";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -18,6 +19,7 @@ export const GameRegistration: React.FC<any> = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const navigate = useNavigate();
   const name = localStorage.getItem("userName");
 
   const players = useGameStore((state) => state.players);
@@ -74,16 +76,14 @@ export const GameRegistration: React.FC<any> = () => {
     if (data) {
       gameId = data[0].id;
       setGameId(gameId);
-    } else {
-      console.log("fix it");
-      return;
-    }
+    } else navigate("/error");
+
     const players = selectedPlayers.reduce((acc: any, currVal: string) => {
       acc[currVal] = 1;
       return acc;
     }, {});
 
-    const { data: lastSessionRecord } = await supabase
+    const { data: lastSessionRecord, error: noData } = await supabase
       .from("poker-sessions")
       .select("id")
       .order("id", { ascending: false })
@@ -99,7 +99,7 @@ export const GameRegistration: React.FC<any> = () => {
       .select();
 
     setIsLoading(false);
-    if (error) console.log(error);
+    if (error) navigate("/error");
     if (sessionData) setIsGameOn(true);
   };
 

@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-width: 120px;
-  height: 450px;
-  overflow: scroll;
+  min-width: 140px;
+  padding-bottom: 100px;
 
   .player {
     width: 100%;
@@ -23,4 +22,15 @@
       opacity: 1;
     }
   }
+}
+
+.btn {
+  font-weight: bold;
+  background-color: #930a0c;
+  border-color: #930a0c;
+  color: white;
+  height: 50px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
 }
