@@ -8,7 +8,7 @@ import {
 } from "./utils";
 import { UpperActionButtons } from "./ActionButtons/UpperActionButtons";
 import { InputModal } from "../../common/Modal/InputModal";
-import { PPlayer } from "./PPlayer";
+import { Player } from "./Player";
 
 export const GamePlay: React.FC<any> = () => {
   const [toggleRefresh, setToggleRefresh] = useState(false);
@@ -66,8 +66,6 @@ export const GamePlay: React.FC<any> = () => {
     window.location.href = url;
   };
 
-  console.log(playersBalance);
-
   return (
     <>
       <div className="game-play-title">
@@ -82,7 +80,7 @@ export const GamePlay: React.FC<any> = () => {
       />
       <div className="players-balance">
         {Object.entries(playersBalance).map(([player, balance]: any, index) => (
-          <PPlayer
+          <Player
             key={index}
             player={player}
             balance={balance}

@@ -44,12 +44,19 @@ export const renderAddPlayerModal = (
   players: any,
   selectedNewPlayer: string
 ) => {
+  const currentPlayers = Object.keys(playersBalance).map(
+    (player: string) => player
+  );
+
+  const filteredArray = players.filter(
+    (element: string) => !currentPlayers.includes(element)
+  );
+
   return (
     <AlertDialog
       isOpen={isAddPlayerModalOpen}
       onApprove={() => onAddPlayer()}
       onClose={() => setIsAddPlayerModalOpen(false)}
-      isDisabled={!!playersBalance[selectedNewPlayer]}
     >
       <p>Select a new player to join the game</p>
       <select
@@ -58,7 +65,7 @@ export const renderAddPlayerModal = (
         value={selectedNewPlayer}
       >
         <option>Select...</option>
-        {players.map((player: any, index: number) => (
+        {filteredArray.map((player: any, index: number) => (
           <option key={index}>{player}</option>
         ))}
       </select>

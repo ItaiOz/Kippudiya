@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useCalculateLeaderboard } from "../../hooks/useCalculateLeaderboard";
 import "./style.scss";
-import { useNavigate } from "react-router-dom";
 
 export const Leaderboard = () => {
+  const [showAll, setShowAll] = useState(false);
   const { getPlayersTotalBalance, players } = useCalculateLeaderboard();
 
   useEffect(() => {
@@ -14,12 +14,17 @@ export const Leaderboard = () => {
     <>
       <h2>Leaderboard</h2>
       <div className="leaderboard-container">
-        {players.map((player: any) => (
-          <div key={player.id} className="player">
-            <span>{player.name}</span>
-            <span>{player.balance}</span>
-          </div>
-        ))}
+        <div className={`players-table ${showAll ? "open" : ""}`}>
+          {players.map((player: any) => (
+            <div key={player.id} className="player">
+              <span>{player.name}</span>
+              <span>{player.balance}</span>
+            </div>
+          ))}
+        </div>
+        <button className="btn" onClick={() => setShowAll(true)}>
+          See All
+        </button>
       </div>
     </>
   );
