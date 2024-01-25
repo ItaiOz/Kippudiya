@@ -22,9 +22,11 @@ export const Leaderboard = () => {
             </div>
           ))}
         </div>
-        <button className="btn" onClick={() => setShowAll(true)}>
-          See All
-        </button>
+        {!showAll && (
+          <button className="btn" onClick={() => setShowAll(true)}>
+            See All
+          </button>
+        )}
       </div>
     </>
   );

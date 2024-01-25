@@ -9,6 +9,7 @@ import {
 import { UpperActionButtons } from "./ActionButtons/UpperActionButtons";
 import { InputModal } from "../../common/Modal/InputModal";
 import { Player } from "./Player";
+import "./style.scss";
 
 export const GamePlay: React.FC<any> = () => {
   const [toggleRefresh, setToggleRefresh] = useState(false);
