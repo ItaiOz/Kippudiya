@@ -15,7 +15,7 @@ export const Leaderboard = () => {
       <h2>Leaderboard</h2>
       <div className="leaderboard-container">
         <div className={`players-table ${showAll ? "open" : ""}`}>
-          {players.slice(0, 5).map((player: any) => (
+          {players.map((player: any) => (
             <div key={player.id} className="player">
               <span>{player.name}</span>
               <span>{player.balance}</span>
