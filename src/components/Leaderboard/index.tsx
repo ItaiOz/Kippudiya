@@ -15,16 +15,18 @@ export const Leaderboard = () => {
       <h2>Leaderboard</h2>
       <div className="leaderboard-container">
         <div className={`players-table ${showAll ? "open" : ""}`}>
-          {players.map((player: any) => (
+          {players.slice(0, 5).map((player: any) => (
             <div key={player.id} className="player">
               <span>{player.name}</span>
               <span>{player.balance}</span>
             </div>
           ))}
         </div>
-        <button className="btn" onClick={() => setShowAll(true)}>
-          See All
-        </button>
+        {!showAll && (
+          <button className="btn" onClick={() => setShowAll(true)}>
+            See All
+          </button>
+        )}
       </div>
     </>
   );
