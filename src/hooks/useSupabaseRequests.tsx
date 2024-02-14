@@ -53,6 +53,7 @@ export const useSupabaseRequests = () => {
     if (error) navigate("/error");
     setIsKipudModalOpen(false);
     setIsLoading(false);
+    setBalanceChanges({});
   };
 
   const getLatestPlayersBalance = async () => {

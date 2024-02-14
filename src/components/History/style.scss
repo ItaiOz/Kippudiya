@@ -1,0 +1,29 @@
+.game-history-container {
+  .back-btn {
+    color: #b5b5b5;
+    background: none;
+    border-color: transparent;
+    border-bottom: #b5b5b5;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .game-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 90vw;
+    padding-bottom: 75px;
+
+    .player-stats {
+      width: 50%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 0px 15px;
+    }
+  }
+}
