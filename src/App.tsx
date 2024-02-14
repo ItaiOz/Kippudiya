@@ -11,6 +11,7 @@ import { HOCLoader } from "./common/HOCLoader/HOCLoader";
 import { PostGame } from "./components/GameZone/PostGame";
 import { History } from "./components/History";
 import { ErrorPage } from "./common/ErrorPage";
+import { GameHistory } from "./components/History/GameHistory";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<MainMenu />} />
             <Route path="/game-zone" element={<GameZone />} />
             <Route path="/history" element={<History />} />
+            <Route path="/history/:gameId" element={<GameHistory />} />
             <Route path="/players-roster" element={<PlayersRoster />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/post-game" element={<PostGame />} />

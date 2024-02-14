@@ -3,6 +3,7 @@ import "./style.scss";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../../store/gameStore";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -10,6 +11,7 @@ const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const PlayersRoster = () => {
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
 
   const players = useGameStore((state) => state.players);
@@ -22,7 +24,7 @@ export const PlayersRoster = () => {
       .insert([{ name: player }]);
 
     if (error) {
-      console.log(error);
+      navigate("/error");
       return;
     } else {
       retrievePlayers();
