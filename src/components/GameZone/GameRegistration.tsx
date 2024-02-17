@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../../store/gameStore";
 import { InputModal } from "../../common/Modal/InputModal";
-import { useNavigate } from "react-router-dom";
+import { useErrorBoundary } from "react-error-boundary";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -19,7 +19,7 @@ export const GameRegistration: React.FC<any> = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const navigate = useNavigate();
+  const { showBoundary } = useErrorBoundary();
   const name = localStorage.getItem("userName");
 
   const players = useGameStore((state) => state.players);
@@ -59,47 +59,27 @@ export const GameRegistration: React.FC<any> = () => {
 
     let gameId;
 
-    // Retrieve the last inserted ID from the table
-    const { data: lastRecord, error: getError } = await supabase
+    const { data, error: gameError } = await supabase
       .from("games")
-      .select("id")
-      .order("id", { ascending: false })
-      .limit(1);
-
-    // // Generate a new ID by incrementing the last inserted ID
-    const nextId = lastRecord ? lastRecord[0].id + 1 : 1;
-
-    const { data } = await supabase
-      .from("games")
-      .insert([{ id: nextId }])
+      .insert({})
       .select();
     if (data) {
       gameId = data[0].id;
       setGameId(gameId);
-    } else navigate("/error");
+    } else showBoundary(gameError);
 
     const players = selectedPlayers.reduce((acc: any, currVal: string) => {
       acc[currVal] = 1;
       return acc;
     }, {});
 
-    const { data: lastSessionRecord, error: noData } = await supabase
-      .from("poker-sessions")
-      .select("id")
-      .order("id", { ascending: false })
-      .limit(1);
-
-    const nextSessionId = lastSessionRecord ? lastSessionRecord[0].id + 1 : 1;
-
     const { data: sessionData, error } = await supabase
       .from("poker-sessions")
-      .insert([
-        { id: nextSessionId, game_id: gameId, mekaped: name, players: players },
-      ])
+      .insert([{ game_id: gameId, mekaped: name, players: players }])
       .select();
 
     setIsLoading(false);
-    if (error) navigate("/error");
+    if (error) showBoundary(error);
     if (sessionData) setIsGameOn(true);
   };
 

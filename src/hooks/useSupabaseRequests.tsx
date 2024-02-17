@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../store/gameStore";
 import { useNavigate } from "react-router-dom";
+import { useErrorBoundary } from "react-error-boundary";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -14,9 +15,11 @@ export const useSupabaseRequests = () => {
   const [playersBalance, setPlayersBalance] = useState<PlayerBalance>({});
   const [isKipudModalOpen, setIsKipudModalOpen] = useState(false);
   const [balanceChanges, setBalanceChanges] = useState({});
+  const [realtimeBalance, setRealtimeBalance] = useState<PlayerBalance>({});
   const [selectedNewPlayer, setSelectedNewPlayer] = useState("");
   const [isAddPlayerModalOpen, setIsAddPlayerModalOpen] = useState(false);
 
+  const { showBoundary } = useErrorBoundary();
   const navigate = useNavigate();
 
   const name = localStorage.getItem("userName");
@@ -28,20 +31,9 @@ export const useSupabaseRequests = () => {
   const onKipudConfirm = async () => {
     setIsLoading(true);
 
-    // Retrieve the last inserted ID from the table
-    const { data: lastRecord, error: getError } = await supabase
-      .from("poker-sessions")
-      .select("id")
-      .order("id", { ascending: false })
-      .limit(1);
-
-    // // Generate a new ID by incrementing the last inserted ID
-    const nextId = lastRecord ? lastRecord[0].id + 1 : 1;
-
     const { data, error } = await supabase
       .from("poker-sessions")
       .insert({
-        id: nextId,
         game_id: gameId,
         mekaped: name,
         players: playersBalance,
@@ -50,40 +42,23 @@ export const useSupabaseRequests = () => {
     if (data) {
       retrieveGameData();
     }
-    if (error) navigate("/error");
+    if (error) showBoundary(error);
     setIsKipudModalOpen(false);
     setIsLoading(false);
     setBalanceChanges({});
   };
 
-  const getLatestPlayersBalance = async () => {
-    const { data, error } = await supabase
-      .from("poker-sessions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(1);
-
-    if (data) {
-      return data[0].players;
-    }
-    if (error) navigate("/error");
-    return null;
-  };
-
   const handleKipud = () => {
+    const balanceDiff = Object.entries(playersBalance).reduce(
+      (acc: any, [key, value]: any) => {
+        if (realtimeBalance[key] - playersBalance[key] !== 0)
+          acc[key] = playersBalance[key] - realtimeBalance[key];
+        return acc;
+      },
+      {}
+    );
     setIsKipudModalOpen(true);
-    const balance = getLatestPlayersBalance();
-    balance.then((previousBalance) => {
-      const balanceDiff = Object.entries(previousBalance).reduce(
-        (acc: any, [key, value]: any) => {
-          if (previousBalance[key] - playersBalance[key] !== 0)
-            acc[key] = playersBalance[key] - previousBalance[key];
-          return acc;
-        },
-        {}
-      );
-      setBalanceChanges(balanceDiff);
-    });
+    setBalanceChanges(balanceDiff);
   };
 
   const onPlayerBalanceChange = (name: string, count: number) => {
@@ -98,15 +73,6 @@ export const useSupabaseRequests = () => {
     );
     if (found) return;
 
-    const { data: lastRecord, error: getError } = await supabase
-      .from("poker-sessions")
-      .select("id")
-      .order("id", { ascending: false })
-      .limit(1);
-
-    // // Generate a new ID by incrementing the last inserted ID
-    const nextId = lastRecord?.[0].id + 1;
-
     const tempNewBalance = { ...playersBalance };
     tempNewBalance[selectedNewPlayer] = 1;
     setPlayersBalance(tempNewBalance);
@@ -114,7 +80,6 @@ export const useSupabaseRequests = () => {
     const { data, error } = await supabase
       .from("poker-sessions")
       .insert({
-        id: nextId,
         game_id: gameId,
         mekaped: name,
         players: tempNewBalance,
@@ -123,7 +88,7 @@ export const useSupabaseRequests = () => {
     if (data) {
       retrieveGameData();
     }
-    if (error) navigate("/error");
+    if (error) showBoundary(error);
     setIsAddPlayerModalOpen(false);
     setIsLoading(false);
   };
@@ -131,12 +96,12 @@ export const useSupabaseRequests = () => {
   const onEndGame = async () => {
     setIsLoading(true);
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("games")
       .update({ ended_at: new Date().toISOString(), players: playersBalance })
       .eq("id", gameId);
 
-    if (error) navigate("/error");
+    if (error) showBoundary(error);
 
     setIsGameOn(false);
     setIsLoading(false);
@@ -152,9 +117,15 @@ export const useSupabaseRequests = () => {
       .order("created_at", { ascending: false })
       .limit(1);
 
-    if (data) setPlayersBalance(data[0].players);
-    if (error) navigate("/error");
-
+    if (data) {
+      setRealtimeBalance(data[0].players);
+      setPlayersBalance(data[0].players);
+    }
+    if (error) {
+      showBoundary(error);
+      setIsLoading(false);
+      return;
+    }
     setIsLoading(false);
   };
 

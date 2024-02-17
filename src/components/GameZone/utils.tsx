@@ -14,23 +14,21 @@ export const renderKipudModal = (
       onClose={() => setIsKipudModalOpen(false)}
       isDisabled={Object.keys(balanceChanges).length === 0}
     >
-      {balanceChanges && (
-        <>
-          {Object.keys(balanceChanges).length > 0 ? (
-            <p>These Following changes will be made</p>
-          ) : (
-            <p>No changes have been made so far</p>
-          )}
-          {Object.entries(balanceChanges).map(
-            ([key, value]: any, index: number) => (
-              <div className="players-changes" key={index}>
-                <span>{key}</span>
-                <span>{value > 0 ? `+${value}` : value}</span>
-              </div>
-            )
-          )}
-        </>
-      )}
+      <>
+        {Object.keys(balanceChanges).length ? (
+          <p>The following changes will be made:</p>
+        ) : (
+          <p>No changes have been made so far</p>
+        )}
+        {Object.entries(balanceChanges).map(
+          ([key, value]: any, index: number) => (
+            <div className="players-changes" key={index}>
+              <span>{key}</span>
+              <span>{value > 0 ? `+${value}` : value}</span>
+            </div>
+          )
+        )}
+      </>
     </AlertDialog>
   );
 };
