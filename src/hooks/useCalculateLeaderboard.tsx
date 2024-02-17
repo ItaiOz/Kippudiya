@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { PlayersBalance } from "../interfaces/interface";
-import { useNavigate } from "react-router-dom";
+import { useGameStore } from "../store/gameStore";
+import { useErrorBoundary } from "react-error-boundary";
 
 const supabaseUrl: any = process.env.REACT_APP_PROJECT_URL;
 const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
@@ -9,8 +10,11 @@ const supabaseKey: any = process.env.REACT_APP_PUBLIC_API_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const useCalculateLeaderboard = () => {
-  const navigate = useNavigate();
   const [players, setPlayers] = useState([] as any);
+
+  const { showBoundary } = useErrorBoundary();
+
+  const setIsLoading = useGameStore((state: any) => state.setIsLoading);
 
   const sortPlayers = (players: PlayersBalance[]) => {
     const sortedArray = players.sort((a, b) => a.balance - b.balance);
@@ -19,22 +23,22 @@ export const useCalculateLeaderboard = () => {
   };
 
   const getPlayersTotalBalance = async () => {
+    setIsLoading(true);
     const { data, error } = await supabase.from("players").select("*");
 
-    if (error) navigate("/error");
+    if (error) showBoundary(error);
 
     if (data) sortPlayers(data);
+    setIsLoading(false);
   };
 
   const updateTotalBalance = async (playersBalance: PlayersBalance) => {
+    setIsLoading(true);
     const { data: players, error } = await supabase.from("players").select("*");
 
-    if (error) {
-      navigate("/error");
-      return;
-    }
+    if (error) showBoundary(error);
 
-    const updatedPlayers = players.map((player) => {
+    const updatedPlayers = players?.map((player) => {
       return {
         id: player.id,
         name: player.name,
@@ -42,11 +46,12 @@ export const useCalculateLeaderboard = () => {
       };
     });
 
-    const { data, error: upsertError } = await supabase
+    const { error: upsertError } = await supabase
       .from("players")
-      .upsert([...updatedPlayers]);
+      .upsert([...(updatedPlayers ?? [])]);
 
-    if (upsertError) navigate("/error");
+    setIsLoading(false);
+    if (upsertError) showBoundary(error);
   };
 
   return {

@@ -12,25 +12,28 @@ import { PostGame } from "./components/GameZone/PostGame";
 import { History } from "./components/History";
 import { ErrorPage } from "./common/ErrorPage";
 import { GameHistory } from "./components/History/GameHistory";
+import { ErrorBoundary } from "react-error-boundary";
 
 function App() {
   return (
     <div className="App">
       <HOCLoader>
         <Header />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<MainMenu />} />
-            <Route path="/game-zone" element={<GameZone />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/history/:gameId" element={<GameHistory />} />
-            <Route path="/players-roster" element={<PlayersRoster />} />
-            <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/post-game" element={<PostGame />} />
-            <Route path="/error" element={<ErrorPage />} />
-          </Routes>
-          <FooterNavigation />
-        </BrowserRouter>
+        <ErrorBoundary FallbackComponent={ErrorPage}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<MainMenu />} />
+              <Route path="/game-zone" element={<GameZone />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/history/:gameId" element={<GameHistory />} />
+              <Route path="/players-roster" element={<PlayersRoster />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/post-game" element={<PostGame />} />
+              <Route path="*" element={<ErrorPage />} />
+            </Routes>
+            <FooterNavigation />
+          </BrowserRouter>
+        </ErrorBoundary>
       </HOCLoader>
     </div>
   );

@@ -14,13 +14,17 @@ export const GameZone = () => {
   const setIsGameOn = useGameStore((state) => state.setIsGameOn);
   const setGameId = useGameStore((state) => state.setGameId);
 
+  const setIsLoading = useGameStore((state: any) => state.setIsLoading);
+
   const gameOnCheck = async () => {
+    setIsLoading(true);
     const { data: rows, error } = await supabase
       .from("games")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(1);
 
+    setIsLoading(false);
     if (error) {
       console.error(error);
       return;
