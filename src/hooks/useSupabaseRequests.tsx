@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useGameStore } from "../store/gameStore";
 import { useNavigate } from "react-router-dom";
@@ -128,6 +128,24 @@ export const useSupabaseRequests = () => {
     }
     setIsLoading(false);
   };
+
+  useEffect(() => {
+    const subscription = supabase
+      .channel("poker-sessions")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "poker-sessions" },
+        () => {
+          setIsKipudModalOpen(false);
+          retrieveGameData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return {
     retrieveGameData,
