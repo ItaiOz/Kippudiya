@@ -56,6 +56,19 @@ export const GamePlay: React.FC<any> = () => {
     retrieveGameData();
   }, [toggleRefresh]);
 
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Refresh the page when user leaves the page
+      window.location.reload();
+    };
+
+    window.addEventListener("visibilitychange", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("visibilitychange", handleBeforeUnload);
+    };
+  }, []);
+
   const shareToWhatsApp = () => {
     let text = "";
 
