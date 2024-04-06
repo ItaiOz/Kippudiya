@@ -129,13 +129,17 @@ export const useSupabaseRequests = () => {
     setIsLoading(false);
   };
 
+  const updated = () => {
+    console.log("table updated");
+  };
   useEffect(() => {
     const subscription = supabase
       .channel("poker-sessions")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "poker-sessions" },
+        { event: "UPDATE", schema: "public", table: "poker-sessions" },
         () => {
+          console.log("changed");
           setIsKipudModalOpen(false);
           retrieveGameData();
         }
@@ -144,6 +148,27 @@ export const useSupabaseRequests = () => {
 
     return () => {
       subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    // Subscribe to changes in the table
+    const aaa = supabase
+      .channel("games")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "games",
+        },
+        () => {
+          navigate("/");
+        }
+      )
+      .subscribe();
+    return () => {
+      aaa.unsubscribe(); // Cleanup on unmount
     };
   }, []);
 
